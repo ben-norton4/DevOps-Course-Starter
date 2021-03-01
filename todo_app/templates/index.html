@@ -7,11 +7,31 @@
     <p class="lead">Just another to-do app.</p>
   </div>
 
+  <div class="mb-5">
+    <h2 class="font-weight-light">Add To-Do Item</h2>
+    <form action="/" method="post">
+        <input type="text" class="form-control mb-1" name="add-item">
+        <button type="submit" class="btn btn-outline-primary">Submit</button>
+    </form>
+  </div>
+
   <div class="row">
     <div class="col-md-12">
-      <h2>Items</h2>
+      <h2 class="font-weight-light">Items</h2>
       <ul class="list-group mb-4">
         <!-- List the todo items here -->
+        {% for todo_item in todo_items %}
+          <li class="list-group mb-3">{{todo_item.id }} - {{todo_item.status}} - {{todo_item.title}}
+            <div class="btn-group">
+              <form action="{{ url_for('complete', id=todo_item.id) }}" method="post">
+                <button type="submit" class="btn btn-outline-success mt-1 mr-1">Complete</button>
+              </form>
+              <form action="{{ url_for('delete', id=todo_item.id) }}" method="post">
+                <button type="submit" class="btn btn-outline-danger mt-1 mr-1">Delete</button>
+              </form>
+            </div>
+          </li>
+        {% endfor %}
       </ul>
     </div>
   </div>
