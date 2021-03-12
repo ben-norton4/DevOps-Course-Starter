@@ -1,4 +1,4 @@
-class Item:
+class Item():
     def __init__(self, id, name, description, due_date, id_list, id_board, status='To Do'):
         self.id = id
         self.name = name
