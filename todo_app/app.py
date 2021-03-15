@@ -1,12 +1,11 @@
 from todo_app.trello_api_client import TrelloAPIClient
-from todo_app.item import Item
 from flask import Flask, render_template, request, redirect
 from todo_app.flask_config import Config
 
 app = Flask(__name__)
 app.config.from_object(Config)
-trello_api_client = TrelloAPIClient()
 
+trello_api_client = TrelloAPIClient()
 todo_app_board = '604153265cd41321654ddebb'
 todo_list = '604153265cd41321654ddebc'
 doing_list = '604153265cd41321654ddebd'
