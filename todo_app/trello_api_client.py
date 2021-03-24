@@ -1,19 +1,37 @@
 import os
 from dotenv import load_dotenv
 import requests
-from todo_app.item import Item
+from todo_app.item import Item, TrelloBoard, TrelloList
 from datetime import datetime
 
 class TrelloAPIClient():
     def __init__(self):
         pass
 
+    def get_boards(self):
+        url = f'https://api.trello.com/1/members/me/boards'
+        query = {'key': self.get_api_key(), 'token': self.get_api_token()}
+        response = requests.get(url, data=query).json()
+        boards = []
+        for item in response:
+            boards.append(TrelloBoard(item['id'], item['name']))
+        return boards
+
+    def get_lists_on_a_board(self, board_id):
+        url = f'https://api.trello.com/1/boards/{board_id}/lists'
+        query = {'key': self.get_api_key(), 'token': self.get_api_token()}
+        response = requests.get(url, data=query).json()
+        lists = []
+        for item in response:
+            lists.append(TrelloList(item['id'], item['name']))
+        return lists
+
     def get_items_on_a_board(self, board_id):
         url = f'https://api.trello.com/1/boards/{board_id}/cards'
         query = {'key': self.get_api_key(), 'token': self.get_api_token()}
         response = requests.get(url, data=query).json()
         cards = []
-        for item in response:            
+        for item in response:
             cards.append(Item(item['id'], item['name'], item['desc'], self.datetime_formatted_as_date(item['due']), item['idList'], item['idBoard'], self.get_list_name(item['idList'])))
         return cards
 
