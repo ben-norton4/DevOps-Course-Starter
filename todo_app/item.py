@@ -8,7 +8,7 @@ class Item():
         self.id_board = id_board
         self.status = status
 
-class TrelloBoard():
+""" class TrelloBoard():
     def __init__(self, id, name):
         self.id = id
         self.name = name
@@ -16,4 +16,4 @@ class TrelloBoard():
 class TrelloList():
     def __init__(self, id, name):
         self.id = id
-        self.name = name
+        self.name = name """

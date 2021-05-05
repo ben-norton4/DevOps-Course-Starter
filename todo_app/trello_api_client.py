@@ -1,7 +1,9 @@
 import os
 from dotenv import load_dotenv
 import requests
-from todo_app.item import Item, TrelloBoard, TrelloList
+from todo_app.item import Item
+from todo_app.trello_board import TrelloBoard
+from todo_app.trello_list import TrelloList
 from datetime import datetime
 
 class TrelloAPIClient():
