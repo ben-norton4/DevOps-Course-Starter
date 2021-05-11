@@ -53,7 +53,66 @@
         <div class="col-md-12">
           <h2 class="font-weight-light">Items</h2>
           <ul class="list-group mb-1">
-            {% for item in view_model.items %}
+
+            {% for item in view_model.todo_items %}
+              <li class="list-group mb-3">
+                <div class="card border-dark text-dark bg-light mb-2">
+                  <div class="card-body">
+                    <h5 class="card-title">{{ item.status }}: {{ item.name }}</h5>
+                    <p class="card-text lead">{{ item.description }}</p>
+                    <p class="card-text">Due: {{ item.due_date }}</p>
+                    <div class="btn-group">
+                      <div class="dropdown">
+                        <button class="btn btn-primary dropdown-toggle mr-1" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          Move to list
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                          {% for list in selected_board_lists %}
+                          <form action="{{ url_for('update_status', board_id=selected_board.id, list_id=list.id, id=item.id) }}" method="post">
+                            <button class="dropdown-item" value="{{ list.id }}">{{ list.name }}</a>
+                          </form>
+                          {% endfor %}
+                        </div>
+                      </div>
+                      <form action="{{ url_for('delete', board_id=selected_board.id, id=item.id) }}" method="post">
+                        <button type="submit" class="btn btn-outline-danger mr-1">Delete</button>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </li>
+            {% endfor %}
+
+            {% for item in view_model.doing_items %}
+              <li class="list-group mb-3">
+                <div class="card border-dark text-dark bg-light mb-2">
+                  <div class="card-body">
+                    <h5 class="card-title">{{ item.status }}: {{ item.name }}</h5>
+                    <p class="card-text lead">{{ item.description }}</p>
+                    <p class="card-text">Due: {{ item.due_date }}</p>
+                    <div class="btn-group">
+                      <div class="dropdown">
+                        <button class="btn btn-primary dropdown-toggle mr-1" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          Move to list
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                          {% for list in selected_board_lists %}
+                          <form action="{{ url_for('update_status', board_id=selected_board.id, list_id=list.id, id=item.id) }}" method="post">
+                            <button class="dropdown-item" value="{{ list.id }}">{{ list.name }}</a>
+                          </form>
+                          {% endfor %}
+                        </div>
+                      </div>
+                      <form action="{{ url_for('delete', board_id=selected_board.id, id=item.id) }}" method="post">
+                        <button type="submit" class="btn btn-outline-danger mr-1">Delete</button>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </li>
+            {% endfor %}
+
+            {% for item in view_model.done_items %}
               <li class="list-group mb-3">
                 <div class="card border-dark text-dark bg-light mb-2">
                   <div class="card-body">

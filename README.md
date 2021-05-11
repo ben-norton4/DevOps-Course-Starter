@@ -52,3 +52,42 @@ You should see output similar to the following:
  * Debugger PIN: 226-556-590
 ```
 Now visit [`http://localhost:5000/`](http://localhost:5000/) in your web browser to view the app.
+
+## Testing the App
+
+Testing is done in this app using pytest. To install pytest run:
+
+```bash
+$ pip install pytest
+```
+
+You can test the app in a number of ways.
+
+1. From the command line:
+```
+$ pytest
+```
+
+2. Configure VSCode:
+    
+Install Python extension if not already installed. Then select the Python interpreter to use. Use the below command to find the correct interpreter for your virtual environment:
+
+Mac / Linux / WSL
+```
+$ poetry run which python
+```
+
+Windows Powershell
+```
+ $ poetry run where python
+```
+
+Select the Python executable from the status bar that corresponds to the virtual environment
+
+In VSCode settings add these values:
+```
+"python.testing.unittestEnabled": false,
+"python.testing.nosetestsEnabled": false,
+"python.testing.pytestEnabled": true
+```
+Run (Ctrl + Shift + P) "Discover Tests" then "Run Tests" from the command palette to check it's working. You can run tests for the whole suite or individually from the Testing view in the VSCode sidebar.
