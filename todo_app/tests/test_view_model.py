@@ -17,10 +17,13 @@ def view_model() -> ViewModel:
     return view_model
 
 def test_todo_items(view_model):
+    assert len(view_model.todo_items) == 1
     assert all([item.status.lower() == 'to do' for item in view_model.todo_items])
 
 def test_doing_items(view_model):
+    assert len(view_model.doing_items) == 2
     assert all([item.status.lower() == 'doing' for item in view_model.doing_items])
 
 def test_done_items(view_model):
+    assert len(view_model.done_items) == 3
     assert all([item.status.lower() == 'done' for item in view_model.done_items])

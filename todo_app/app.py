@@ -11,13 +11,15 @@ def create_app():
 
     @app.route('/')
     def index():
+        boards = trello_api_client.get_boards()
         selected_board = boards[0]
         board_id = selected_board.id
         return redirect(f'/select_board/{board_id}')
 
     @app.route('/select_board/<id>', methods=['GET'])
     def select_board(id):
-
+        boards = trello_api_client.get_boards()
+        
         for board in boards:
             if board.id == id:
                 selected_board = board
