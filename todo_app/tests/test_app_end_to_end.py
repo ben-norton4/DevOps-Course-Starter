@@ -62,7 +62,6 @@ def test_create_item(driver, app_with_temp_board):
     card_title = create_test_item(driver, test_item_name)
     assert test_item_name in card_title.text
     driver.find_element_by_name('delete-button').click()
-    driver.implicitly_wait(3)
 
 
 def test_update_item(driver, app_with_temp_board):
@@ -75,7 +74,6 @@ def test_update_item(driver, app_with_temp_board):
     driver.find_element_by_name('Done').click()
     assert driver.page_source.find('Done: ' + test_item_name) > 0
     driver.find_element_by_name('delete-button').click()
-    driver.implicitly_wait(3)
 
 def test_delete_item(driver, app_with_temp_board):
     select_test_board(driver)

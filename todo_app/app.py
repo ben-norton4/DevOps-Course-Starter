@@ -37,6 +37,7 @@ def create_app():
         due = request.form.get('due-date')
         list = request.form.get('list')
         trello_api_client.create_item(list, title, desc, due)
+        
         return redirect(f'/select_board/{board_id}')
 
     @app.route('/update_status/<board_id>/<list_id>/<id>', methods=['POST'])
