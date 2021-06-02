@@ -30,7 +30,9 @@ You'll also need to clone a new `.env` file from the `.env.template` to store lo
 $ cp .env.template .env  # (first time only)
 ```
 
-The `.env` file is used by flask to set environment variables when running `flask run`. This enables things like development mode (which also enables features like hot reloading when you make a file change). There's also a [SECRET_KEY](https://flask.palletsprojects.com/en/1.1.x/config/#SECRET_KEY) variable which is used to encrypt the flask session cookie.
+The `.env` file is used by flask to set environment variables when running `flask run`. This enables things like development mode (which also enables features like hot reloading when you make a file change). There's also a [SECRET_KEY](https://flask.palletsprojects.com/en/1.1.x/config/#SECRET_KEY) variable which is used to encrypt the flask session cookie. 
+
+To call the Trello API you will need to set environment variables for a [TRELLO_API_KEY] and [TRELLO_API_TOKEN] in the .env file. To create these you will need to set up a Trello account here: https://trello.com/signup and generate an API key and API token by following the instructions here: https://trello.com/app-key.
 
 ## Running the App
 
