@@ -55,17 +55,15 @@ Now visit [`http://localhost:5000/`](http://localhost:5000/) in your web browser
 
 ## Testing the App
 
-Testing is done in this app using pytest. To install pytest run:
+Testing is done in this app using pytest.
 
-```bash
-$ pip install pytest
-```
+The end-to-end tests use a FireFox driver for the tests. You will need to have FireFox installed on your system. You will also need to download the GeckoDriver executable and place it in the root of the project. FireFox and GeckoDriver will need to be the same version to work together. GeckoDriver can be downloaded from here: https://github.com/mozilla/geckodriver/releases
 
 You can test the app in a number of ways.
 
 1. From the command line:
 ```
-$ pytest
+$ poetry run pytest
 ```
 
 2. Configure VSCode:

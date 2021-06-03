@@ -29,7 +29,6 @@ def driver():
     options = Options()
     options.headless = True
     with webdriver.Firefox(options=options) as driver:
-        driver
         yield driver
 
 def select_test_board(driver):
@@ -84,4 +83,3 @@ def test_delete_item(driver, app_with_temp_board):
     driver.find_element_by_name('delete-button').click()
     driver.implicitly_wait(3)
     assert driver.page_source.find(test_item_name) == -1
-

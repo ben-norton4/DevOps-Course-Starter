@@ -1,11 +1,8 @@
 class ViewModel:
     def __init__(self, items):
         self._items = items
-        self._todo_items = []
         self.todo_items = items
-        self._doing_items = []
         self.doing_items = items
-        self._done_items = []
         self.done_items = items
 
     @property

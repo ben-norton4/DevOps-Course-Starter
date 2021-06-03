@@ -8,6 +8,7 @@ from datetime import datetime
 
 class TrelloAPIClient():
     def __init__(self):
+        load_dotenv()
         pass
 
     def create_board(self, name):
@@ -16,13 +17,6 @@ class TrelloAPIClient():
         response = requests.post(url, data=query).json()
         board = TrelloBoard(response['id'], response['name'])
         return board
-
-    def create_list(self, name, board_id):
-        url = 'https://api.trello.com/1/lists/'
-        query = {'name': name, 'idBoard': board_id, 'key': self.get_api_key(), 'token': self.get_api_token()}
-        response = requests.post(url, data=query).json()
-        trello_list = TrelloList(response['id'], response['name'])
-        return trello_list
 
     def create_item(self, list_id, title, description, due_date):
         url = 'https://api.trello.com/1/cards'
@@ -81,12 +75,10 @@ class TrelloAPIClient():
 
     @staticmethod
     def get_api_key():
-        load_dotenv()
         return os.getenv('TRELLO_API_KEY')
 
     @staticmethod
     def get_api_token():
-        load_dotenv()
         return os.getenv('TRELLO_API_TOKEN')
 
     @staticmethod
