@@ -122,3 +122,6 @@ env/
 ### Geckodriver executable ###
 geckodriver.exe
 geckodriver.log
+
+### Vagrant sub-directory ###
+.vagrant

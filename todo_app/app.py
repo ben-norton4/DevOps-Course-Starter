@@ -3,7 +3,6 @@ from todo_app.view_model import ViewModel
 from flask import Flask, render_template, request, redirect
 
 trello_api_client = TrelloAPIClient()
-boards = trello_api_client.get_boards()
 
 def create_app():
     app = Flask(__name__)
