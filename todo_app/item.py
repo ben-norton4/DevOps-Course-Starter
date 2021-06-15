@@ -7,13 +7,3 @@ class Item():
         self.id_list = id_list
         self.id_board = id_board
         self.status = status
-
-class TrelloBoard():
-    def __init__(self, id, name):
-        self.id = id
-        self.name = name
-
-class TrelloList():
-    def __init__(self, id, name):
-        self.id = id
-        self.name = name
