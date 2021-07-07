@@ -25,11 +25,10 @@ Vagrant.configure("2") do |config|
 
     # Install poetry
     curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python -
-    source ${HOME}/.profile
     
   SHELL
 
-  # Redirect traffic from pport 5000 on host to guest
+  # Redirect traffic from port 5000 on host to guest
   config.vm.network "forwarded_port", guest: 5000, host: 5000
 
   # Setup and launch TODO app

@@ -1,0 +1,23 @@
+### Config ###
+.env
+.env.template
+
+### Vagrant ###
+.vagrant
+.Vagrantfile
+
+### Github stuff ###
+.github
+.git
+
+### VS Code ###
+.vscode
+
+### Geckodriver log ###
+geckodriver.log
+
+### Vagrant sub-directory ###
+.vagrant
+
+### Log files ###
+logs.txt
