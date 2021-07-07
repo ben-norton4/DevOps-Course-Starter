@@ -112,7 +112,7 @@ Prerequisites:
 
 1. Configure your host machine system and install Docker Desktop using these instructions: https://docs.docker.com/get-docker/
 
-When running a docker container from the dev or prod image you will need to pass in a .env file containing the below variables (note the TRELLO_API_KEY and TRELLO_API_TOKEN values should be replaced with your own trello values):
+To run a docker container you will need to create an .env file in the root of the project containing the below variables (note the TRELLO_API_KEY and TRELLO_API_TOKEN values should be replaced with your own trello values):
 ```
 FLASK_APP=todo_app/app
 FLASK_ENV=development
@@ -121,12 +121,17 @@ TRELLO_API_KEY=your_trello_api_key
 TRELLO_API_TOKEN=your_trello_api_token
 ```
 
-To build and run a development container use the below commands (or similar depending on your setup):
+To build and run the prod and dev containers using docker compose use the below command:
+```
+docker-compose up
+```
+
+To build and run a development container manually use the below commands (or similar depending on your setup):
 ```
 $ docker build --target development --tag todo-app:dev .
 ```
 ```
-$ docker run -d --env-file ./.env -p 5000:5000 --mount type=bind,source="$(pwd)"/todo_app,target=/app/todo_app todo-app:dev
+$ docker run -d --env-file ./.env -p 5001:5001 --mount type=bind,source="$(pwd)"/todo_app,target=/app/todo_app todo-app:dev
 ```
 
 To build and run a production container use the below commands (or similar depending on your setup):
