@@ -1,5 +1,5 @@
 {
-    "python.pythonPath": "C:\\Users\\benjamin.norton\\Desktop\\DevOpsAcademy\\Module1\\ProjectExercise\\DevOps-Course-Starter\\.venv\\Scripts\\python.exe",
+    "python.pythonPath": "C:\\Users\\benjamin.norton\\AppData\\Local\\Programs\\Python\\Python39\\python.exe",
     "python.testing.unittestEnabled": false,
     "python.testing.nosetestsEnabled": false,
     "python.testing.pytestEnabled": true

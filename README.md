@@ -89,3 +89,17 @@ In VSCode settings add these values:
 "python.testing.pytestEnabled": true
 ```
 Run (Ctrl + Shift + P) "Discover Tests" then "Run Tests" from the command palette to check it's working. You can run tests for the whole suite or individually from the Testing view in the VSCode sidebar.
+
+## Running the App in a virtual machine
+
+We set up the application to install and launch a dev environment using vagrant
+
+Prerequisites:
+
+1. Install a hypervisor
+2. Install Vagrant (available here: https://www.vagrantup.com)
+
+To spin up a virtual machine use the below command:
+```
+$ vagrant up
+```
