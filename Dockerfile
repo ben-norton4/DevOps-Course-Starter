@@ -5,7 +5,6 @@ WORKDIR /app
 # Expose the port that we want the host to listen to
 EXPOSE 5000
 # Copy across the project files
-#COPY . /app
 COPY ./todo_app /app
 COPY ./pyproject.toml /app
 # Install the project dependencies
