@@ -5,8 +5,7 @@ WORKDIR /app
 # Expose the port that we want the host to listen to
 EXPOSE 5000
 # Copy across the project files
-COPY ./todo_app /app
-COPY ./pyproject.toml /app
+COPY . /app
 # Install the project dependencies
 RUN poetry install
 
