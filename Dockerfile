@@ -10,10 +10,12 @@ COPY . /app
 RUN poetry install
 
 FROM base as production
+ENV FLASK_ENV=production
 # Set the script to run as production on startup of the container
 ENTRYPOINT ["poetry", "run", "gunicorn", "--config", "gunicorn_config.py", "todo_app.app:create_app()"]
 
 FROM base as development
+ENV FLASK_ENV=development
 # Expose the port that we want the host to listen to
 EXPOSE 5001
 # Set the script to run as development on startup of the container
