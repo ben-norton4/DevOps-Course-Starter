@@ -125,3 +125,6 @@ geckodriver.log
 
 ### Vagrant sub-directory ###
 .vagrant
+
+### Log files ###
+logs.txt

@@ -12,6 +12,12 @@ def create_app():
     def index():
         boards = trello_api_client.get_boards()
         selected_board = boards[0]
+
+        for board in boards:
+            if board.name == 'ToDo App':
+                selected_board = board
+                break
+        
         board_id = selected_board.id
         return redirect(f'/select_board/{board_id}')
 
@@ -53,4 +59,4 @@ def create_app():
 
 if __name__ == '__main__':
     app = create_app()
-    app.run(debug = True)
+    app.run()
