@@ -10,7 +10,7 @@ COPY . /app
 FROM base as production
 ENV FLASK_ENV=production
 # Install the project dependencies
-RUN poetry install
+RUN poetry install --no-dev
 # Set the script to run as production on startup of the container
 ENTRYPOINT ["poetry", "run", "gunicorn", "--config", "gunicorn_config.py", "todo_app.app:create_app()"]
 
