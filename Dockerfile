@@ -27,3 +27,5 @@ ENV FLASK_ENV=development
 RUN poetry install
 # Run test suite
 ENTRYPOINT ["poetry", "run", "pytest"]
+
+
