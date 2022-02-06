@@ -26,9 +26,11 @@ def app_with_temp_board():
 
 @pytest.fixture(scope='module')
 def driver():
-    options = Options()
-    options.headless = True
-    with webdriver.Firefox(options=options) as driver:
+    opts = webdriver.ChromeOptions()
+    opts.add_argument('--headless')
+    opts.add_argument('--no-sandbox')
+    opts.add_argument('--disable-dev-shm-usage')
+    with webdriver.Chrome(options=opts) as driver:
         yield driver
 
 def select_test_board(driver):
@@ -61,7 +63,6 @@ def test_create_item(driver, app_with_temp_board):
     card_title = create_test_item(driver, test_item_name)
     assert test_item_name in card_title.text
     driver.find_element_by_name('delete-button').click()
-
 
 def test_update_item(driver, app_with_temp_board):
     select_test_board(driver)
