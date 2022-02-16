@@ -5,9 +5,9 @@ from todo_app.app import create_app
 from todo_app.trello_api_client import TrelloAPIClient
 from threading import Thread
 from selenium import webdriver
-from selenium.webdriver.firefox.options import Options
-from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.common.by import By
+#from selenium.webdriver.firefox.options import Options
+#from selenium.webdriver.common.keys import Keys
+#from selenium.webdriver.common.by import By
 
 trello_api_client = TrelloAPIClient()
 test_board_name = 'E2E Test Board'
