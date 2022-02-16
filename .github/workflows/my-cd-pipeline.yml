@@ -11,6 +11,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - run: docker login --username=${{secrets.DOCKER_LOGIN}} --password-stdin=${{secrets.DOCKER_PASSWORD}}
+    - run: cat ${{secrets.DOCKER_PASSWORD}} | docker login --username=${{secrets.DOCKER_LOGIN}} --password-stdin
     - run: docker build --target production --tag todo-app:production:${GITHUB_SHA::6} .
     - run: docker push benotron/todo-app:production:${GITHUB_SHA::6}
