@@ -4,11 +4,6 @@ on:
     paths-ignore:
       - 'README.md'
 
-on:
-  pull_request:
-    paths-ignore:
-      - 'README.md'
-
 jobs:
   build:
     name: Build and test
