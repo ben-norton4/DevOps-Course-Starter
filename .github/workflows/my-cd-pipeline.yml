@@ -13,5 +13,5 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     - run: echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_LOGIN }} --password-stdin
-    - run: docker build --target production --tag todo-app:production:${GITHUB_SHA::6} .
-    - run: docker push benotron/todo-app:production:${GITHUB_SHA::6}
+    - run: docker build --target production --tag todo-app-production:${GITHUB_SHA::6} .
+    - run: docker push ${{ secrets.DOCKER_LOGIN }}/todo-app-production:${GITHUB_SHA::6}
