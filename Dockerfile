@@ -12,6 +12,7 @@ ENV FLASK_ENV=production
 # Install the project dependencies
 RUN poetry install --no-dev
 # Run as production on startup of the container
+
 #ENTRYPOINT ["poetry", "run", "gunicorn", "--config", "gunicorn_config.py", "todo_app.app:create_app()"]
 RUN chmod +x ./entrypoint.sh
 ENTRYPOINT ./entrypoint.sh
