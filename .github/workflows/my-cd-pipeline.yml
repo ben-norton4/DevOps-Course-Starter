@@ -19,5 +19,5 @@ jobs:
     - run: docker tag ${{ secrets.DOCKER_LOGIN }}/todo-app-production:${GITHUB_SHA::6} registry.heroku.com/todo-app-devops-academy/web
     - run: docker login --username=_ --password=${{ secrets.HEROKU_TOKEN }} registry.heroku.com
     - run: docker push registry.heroku.com/todo-app-devops-academy/web
-    - run: heroku container:release web -a todo-app-devops-academy
-    - run: heroku open
+    - run: heroku container:release -a todo-app-devops-academy web
+    - run: heroku open -a todo-app-devops-academy
