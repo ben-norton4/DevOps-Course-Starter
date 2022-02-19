@@ -2,7 +2,7 @@ name: Continuous Deployment
 on:
   push:
     branches:
-      - exercise-8
+      - main
     paths-ignore:
       - 'README.md'
 
