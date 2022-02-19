@@ -15,3 +15,9 @@ jobs:
     - run: echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_LOGIN }} --password-stdin
     - run: docker build --target production --tag ${{ secrets.DOCKER_LOGIN }}/todo-app-production:${GITHUB_SHA::6} .
     - run: docker push ${{ secrets.DOCKER_LOGIN }}/todo-app-production:${GITHUB_SHA::6}
+    - run: docker pull ${{ secrets.DOCKER_LOGIN }}/todo-app-production:${GITHUB_SHA::6}
+    - run: docker tag ${{ secrets.DOCKER_LOGIN }}/todo-app-production:${GITHUB_SHA::6} registry.heroku.com/todo-app-devops-academy/web
+    - run: docker login --username=_ --password=${{ secrets.HEROKU_API_KEY }} registry.heroku.com
+    - run: docker push registry.heroku.com/todo-app-devops-academy/web
+    - run: heroku container:release web
+    - run: heroku open
