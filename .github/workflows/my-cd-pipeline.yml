@@ -20,4 +20,3 @@ jobs:
     - run: docker login --username=_ --password=${{ secrets.HEROKU_TOKEN }} registry.heroku.com
     - run: docker push registry.heroku.com/todo-app-devops-academy/web
     - run: HEROKU_API_KEY=${{ secrets.HEROKU_TOKEN }} heroku container:release -a todo-app-devops-academy web
-    - run: BROWSER=chrome HEROKU_API_KEY=${{ secrets.HEROKU_TOKEN }} heroku open -a todo-app-devops-academy
