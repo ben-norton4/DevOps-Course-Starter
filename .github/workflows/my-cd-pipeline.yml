@@ -2,21 +2,29 @@ name: Continuous Deployment
 on:
   push:
     branches:
-      - main
+      - exercise-8
     paths-ignore:
       - 'README.md'
 
 jobs:
   build:
-    name: Build prod
+    name: Deploy into production
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v1
-    - run: echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_LOGIN }} --password-stdin
-    - run: docker build --target production --tag ${{ secrets.DOCKER_LOGIN }}/todo-app-production:${GITHUB_SHA::6} .
-    - run: docker push ${{ secrets.DOCKER_LOGIN }}/todo-app-production:${GITHUB_SHA::6}
-    - run: docker pull ${{ secrets.DOCKER_LOGIN }}/todo-app-production:${GITHUB_SHA::6}
-    - run: docker tag ${{ secrets.DOCKER_LOGIN }}/todo-app-production:${GITHUB_SHA::6} registry.heroku.com/todo-app-devops-academy/web
-    - run: docker login --username=_ --password=${{ secrets.HEROKU_TOKEN }} registry.heroku.com
-    - run: docker push registry.heroku.com/todo-app-devops-academy/web
-    - run: HEROKU_API_KEY=${{ secrets.HEROKU_TOKEN }} heroku container:release -a todo-app-devops-academy web
+    - name: login to dockerhub
+      run: echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_LOGIN }} --password-stdin
+    - name: build production docker image
+      run: docker build --target production --tag ${{ secrets.DOCKER_LOGIN }}/todo-app-production:${GITHUB_SHA::6} .
+    - name: push build to dockerhub
+      run: docker push ${{ secrets.DOCKER_LOGIN }}/todo-app-production:${GITHUB_SHA::6}
+    - name: pull production image from dockerhub
+      run: docker pull ${{ secrets.DOCKER_LOGIN }}/todo-app-production:${GITHUB_SHA::6}
+    - name: tag production image for deployment to heroku
+      run: docker tag ${{ secrets.DOCKER_LOGIN }}/todo-app-production:${GITHUB_SHA::6} registry.heroku.com/todo-app-devops-academy/web
+    - name: login to docker on the heroku registry
+      run: docker login --username=_ --password=${{ secrets.HEROKU_TOKEN }} registry.heroku.com
+    - name: push production image to heroku registry
+      run: docker push registry.heroku.com/todo-app-devops-academy/web
+    - name: release the container on the heroku registry
+      run: HEROKU_API_KEY=${{ secrets.HEROKU_TOKEN }} heroku container:release -a todo-app-devops-academy web
