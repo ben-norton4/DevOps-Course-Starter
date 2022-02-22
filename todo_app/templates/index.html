@@ -2,79 +2,51 @@
 {% block title %}To-Do App{% endblock %}
 
 {% block content %}
-  <div class="jumbotron">
+  <div class="jumbotron bg-secondary text-white">
     <h1 class="display-4">To-Do App</h1>
-    <p class="lead">Just another to-do app.</p>
-  </div>
-  <div class="dropdown mb-3">
-    <button class="btn btn-primary dropdown-toggle" type="button" name="select-board" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-      Select board
-    </button>
-    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-      {% for board in boards %}
-      <form action="{{ url_for('select_board', id=board.id) }}" method="get">
-        <button class="dropdown-item" name = "{{ board.name }}" value="{{ board.id }}">{{ board.name }}</a>
-      </form>
-      {% endfor %}
-    </div>
   </div>
   <div class="card border-dark text-dark bg-light mb-2">
     <div class="card-body">
       <div class="mb-4">
-        <h1 class="card-title" name="selected-board-name">{{ selected_board.name }}</h1>
         <h2 class="font-weight-light">Add item</h2>
-        <form action="{{ url_for('create_todo', board_id=selected_board.id) }}" method="post">
+        <form action="{{ url_for('create_todo') }}" method="post">
           <div class="row">
             <div class="col">
               <label for="title">Title</label>
               <input type="text" class="form-control mb-3" id="title" name="title" autocomplete="off" required>
             </div>
             <div class="col">
-              <label for="due-date">Due date</label>
-              <input type="date" class="form-control mb-3" id="due-date" name="due-date" autocomplete="off">
+              <label for="due-date">Due Date</label>
+              <input type="date" class="form-control mb-3" id="due-date" name="due-date" autocomplete="off" required>
             </div>
           </div>
           <label for="description">Description</label>
-          <textarea type="text" class="form-control mb-3" id="description" name="description"></textarea>
-
-          <div class="dropdown">
-            <button class="btn btn-primary dropdown-toggle" type="button" name="select-list" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              Add to list
-            </button>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-              {% for list in selected_board_lists %}
-              <button class="dropdown-item" value="{{ list.id }}" name="list" id="{{ list.name }}">{{ list.name }}</a>
-              {% endfor %}
-            </div>
-          </div>
+          <textarea type="text" class="form-control mb-3" id="description" name="description" required></textarea>
+          <form action="{{ url_for('create_todo') }}" method="post">
+            <button type="submit" name="create-to-do-button" class="btn btn-outline-primary mr-1">To-Do</button>
+          </form>
         </form>
       </div>
       <div class="row">
         <div class="col-md-12">
-          <h2 class="font-weight-light">Items</h2>
           <ul class="list-group mb-1">
 
+            <h2 class="font-weight-light text-dark mt-3">To-Do</h2>
             {% for item in view_model.todo_items %}
               <li class="list-group mb-3">
                 <div class="card border-dark text-dark bg-light mb-2">
                   <div class="card-body">
-                    <h5 class="card-title" name="todo-card-title">{{ item.status }}: {{ item.name }}</h5>
-                    <p class="card-text lead">{{ item.description }}</p>
-                    <p class="card-text">Due: {{ item.due_date }}</p>
+                    <h5 class="card-title mb-3" name="to-do-card-title">{{ item.name }}</h5>
+                    <p class="card-text">{{ item.description }}</p>
+                    <p class="card-text">Due Date: {{ item.due_date }}</p>
                     <div class="btn-group">
-                      <div class="dropdown">
-                        <button class="btn btn-primary dropdown-toggle mr-1" type="button" name="move-to-list" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                          Move to list
-                        </button>
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                          {% for list in selected_board_lists %}
-                          <form action="{{ url_for('update_status', board_id=selected_board.id, list_id=list.id, id=item.id) }}" method="post">
-                            <button class="dropdown-item" name="{{ list.name }}" value="{{ list.id }}">{{ list.name }}</a>
-                          </form>
-                          {% endfor %}
-                        </div>
-                      </div>
-                      <form action="{{ url_for('delete', board_id=selected_board.id, id=item.id) }}" method="post">
+                      <form action="{{ url_for('doing', id=item.id) }}" method="post">
+                        <button type="submit" name="doing-button" class="btn btn-outline-primary mr-1">Doing</button>
+                      </form>
+                      <form action="{{ url_for('done', id=item.id) }}" method="post">
+                        <button type="submit" name="done-button" class="btn btn-outline-success mr-1">Done</button>
+                      </form>
+                      <form action="{{ url_for('delete', id=item.id) }}" method="post">
                         <button type="submit" name="delete-button" class="btn btn-outline-danger mr-1">Delete</button>
                       </form>
                     </div>
@@ -83,27 +55,22 @@
               </li>
             {% endfor %}
 
+            <h2 class="font-weight-light text-primary mt-3">Doing</h2>
             {% for item in view_model.doing_items %}
               <li class="list-group mb-3">
                 <div class="card border-dark text-dark bg-light mb-2">
                   <div class="card-body">
-                    <h5 class="card-title" name="doing-card-title">{{ item.status }}: {{ item.name }}</h5>
-                    <p class="card-text lead">{{ item.description }}</p>
-                    <p class="card-text">Due: {{ item.due_date }}</p>
+                    <h5 class="card-title mb-3" name="doing-card-title">{{ item.name }}</h5>
+                    <p class="card-text">{{ item.description }}</p>
+                    <p class="card-text">Due Date: {{ item.due_date }}</p>
                     <div class="btn-group">
-                      <div class="dropdown">
-                        <button class="btn btn-primary dropdown-toggle mr-1" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                          Move to list
-                        </button>
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                          {% for list in selected_board_lists %}
-                          <form action="{{ url_for('update_status', board_id=selected_board.id, list_id=list.id, id=item.id) }}" method="post">
-                            <button class="dropdown-item" value="{{ list.id }}">{{ list.name }}</a>
-                          </form>
-                          {% endfor %}
-                        </div>
-                      </div>
-                      <form action="{{ url_for('delete', board_id=selected_board.id, id=item.id) }}" method="post">
+                      <form action="{{ url_for('to_do', id=item.id) }}" method="post">
+                        <button type="submit" name="to-do-button" class="btn btn-outline-dark mr-1">To-Do</button>
+                      </form>
+                      <form action="{{ url_for('done', id=item.id) }}" method="post">
+                        <button type="submit" name="done-button" class="btn btn-outline-success mr-1">Done</button>
+                      </form>
+                      <form action="{{ url_for('delete', id=item.id) }}" method="post">
                         <button type="submit" name="delete-button" class="btn btn-outline-danger mr-1">Delete</button>
                       </form>
                     </div>
@@ -112,27 +79,22 @@
               </li>
             {% endfor %}
 
+            <h2 class="font-weight-light text-success mt-3">Done</h2>
             {% for item in view_model.done_items %}
               <li class="list-group mb-3">
                 <div class="card border-dark text-dark bg-light mb-2">
                   <div class="card-body">
-                    <h5 class="card-title" name="done-card-title">{{ item.status }}: {{ item.name }}</h5>
-                    <p class="card-text lead">{{ item.description }}</p>
-                    <p class="card-text">Due: {{ item.due_date }}</p>
+                    <h5 class="card-title mb-3" name="done-card-title">{{ item.name }}</h5>
+                    <p class="card-text">{{ item.description }}</p>
+                    <p class="card-text">Due Date: {{ item.due_date }}</p>
                     <div class="btn-group">
-                      <div class="dropdown">
-                        <button class="btn btn-primary dropdown-toggle mr-1" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                          Move to list
-                        </button>
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                          {% for list in selected_board_lists %}
-                          <form action="{{ url_for('update_status', board_id=selected_board.id, list_id=list.id, id=item.id) }}" method="post">
-                            <button class="dropdown-item" value="{{ list.id }}">{{ list.name }}</a>
-                          </form>
-                          {% endfor %}
-                        </div>
-                      </div>
-                      <form action="{{ url_for('delete', board_id=selected_board.id, id=item.id) }}" method="post">
+                      <form action="{{ url_for('to_do', id=item.id) }}" method="post">
+                        <button type="submit" name="to-do-button" class="btn btn-outline-dark mr-1">To-Do</button>
+                      </form>
+                      <form action="{{ url_for('doing', id=item.id) }}" method="post">
+                        <button type="submit" name="doing-button" class="btn btn-outline-primary mr-1">Doing</button>
+                      </form>
+                      <form action="{{ url_for('delete', id=item.id) }}" method="post">
                         <button type="submit" name="delete-button" class="btn btn-outline-danger mr-1">Delete</button>
                       </form>
                     </div>
