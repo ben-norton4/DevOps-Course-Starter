@@ -44,9 +44,9 @@ def create_test_item(driver, item_name):
     card_title = driver.find_element_by_name('todo-card-title')
     return card_title
 
-""" def test_task_journey(driver, app_with_temp_board):
+def test_task_journey(driver, app_with_temp_board):
     driver.get('http://localhost:5000')
-    assert driver.title == 'To-Do App' """
+    assert driver.title == 'To-Do App'
 
 def test_select_board(driver, app_with_temp_board):
     select_test_board(driver)
