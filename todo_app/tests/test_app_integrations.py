@@ -1,4 +1,5 @@
 import pytest
+import mongomock
 from dotenv import load_dotenv, find_dotenv
 from todo_app.app import create_app
 from todo_app.trello_api_client import TrelloAPIClient
@@ -18,15 +19,16 @@ def client():
     except:
         pass
     
-    test_app = create_app()
-    with test_app.test_client() as client:
-        yield client
+    with mongomock.patch(servers=(('fakemongo.com', 27017),)):
+        test_app = create_app()
+        with test_app.test_client() as client:
+            yield client
 
 @patch('requests.get')
 def test_index_page(mock_get_requests, client):
     mock_get_requests.side_effect = mock_get_cards
     response = client.get('/')
-    assert response.status_code in [301,302,303,307,308]
+    assert response.status_code == 200
 
 @patch('requests.get')
 def test_select_board(mock_get_requests, client):

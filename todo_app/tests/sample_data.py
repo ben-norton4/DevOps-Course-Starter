@@ -3,3 +3,7 @@ sample_trello_cards = [{"id":"605cc4e70c309a11a058f53b","checkItemStates":None,"
 sample_trello_list = {"id": "604153265cd41321654ddebc","name": "To Do","closed": False,"pos": 16384,"idBoard": "604153265cd41321654ddebb"}
 sample_trello_lists = [{"id": "604153265cd41321654ddebc","name": "To Do","closed": False,"pos": 16384,"softLimit": None,"idBoard": "604153265cd41321654ddebb","subscribed": False}]
 sample_trello_card = {"id":"605cc4e70c309a11a058f53b","checkItemStates":None,"closed":False,"dateLastActivity":"2021-03-25T17:14:15.152Z","desc":"Blah","descData":None,"dueReminder":None,"idBoard":"604153265cd41321654ddebb","idList":"604153265cd41321654ddebc","idMembersVoted":[],"idShort":73,"idAttachmentCover":None,"idLabels":[],"manualCoverAttachment":False,"name":"Test Item","pos":49152,"shortLink":"iYIXXjrN","isTemplate":False,"cardRole":None,"badges":{"attachmentsByType":{"trello":{"board":0,"card":0}},"location":False,"votes":0,"viewingMemberVoted":False,"subscribed":False,"fogbugz":"","checkItems":0,"checkItemsChecked":0,"checkItemsEarliestDue":None,"comments":0,"attachments":0,"description":True,"due":"2021-03-25T00:00:00.000Z","dueComplete":False,"start":None},"dueComplete":None,"due":"2021-03-25T00:00:00.000Z","idChecklists":[],"idMembers":[],"labels":[],"shortUrl":"https://trello.com/c/iYIXXjrN","start":None,"subscribed":False,"url":"https://trello.com/c/iYIXXjrN/73-test-item","cover":{"idAttachment":None,"color":None,"idUploadedBackground":None,"size":"normal","brightness":"dark","idPlugin":None}}
+
+
+sample_cards = {}
+sample_card = {}
