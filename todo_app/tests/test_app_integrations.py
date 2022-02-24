@@ -4,7 +4,7 @@ import pymongo
 from dotenv import load_dotenv, find_dotenv
 from todo_app.app import create_app
 from todo_app.trello_api_client import TrelloAPIClient
-from todo_app.tests.sample_data import sample_trello_boards, sample_trello_card, sample_trello_cards, sample_trello_list, sample_trello_lists
+from todo_app.tests.sample_data import sample_trello_boards, sample_trello_card, sample_trello_cards, sample_trello_list, sample_trello_lists, sample_card
 from unittest.mock import patch, Mock
 
 TEST_BOARD_ID = '604153265cd41321654ddebb'
@@ -28,15 +28,9 @@ def client():
 @mongomock.patch(servers=(('fakemongo.com', 27017),))
 def test_create_todo_mongo():
     mock_mongo_client = pymongo.MongoClient('fakemongo.com')
-    post = {
-        'name': 'test',
-        'description': 'desc',
-        'due_date': '04/04/2022',
-        'status': 'To do'
-    }
-    mock_mongo_client.db.collection.insert_one(post)
+    mock_mongo_client.db.collection.insert_one(sample_card)
     #I guess I need to assert that the collection has a thing in it
-    assert mock_mongo_client.db.collection.find({'name':'test'}) != None
+    assert mock_mongo_client.db.collection.find({'name':sample_card['name']}) != None
 
 @patch('requests.get')
 def test_index_page(mock_get_requests, client):

@@ -6,4 +6,9 @@ sample_trello_card = {"id":"605cc4e70c309a11a058f53b","checkItemStates":None,"cl
 
 
 sample_cards = {}
-sample_card = {}
+sample_card = {
+    'name': 'test',
+    'description': 'desc',
+    'due_date': '04/04/2022',
+    'status': 'To do'
+}
