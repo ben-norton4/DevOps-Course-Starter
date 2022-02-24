@@ -37,7 +37,6 @@ def create_app():
             'due_date': Item.datetime_formatted_as_date(due),
             'status': todo_status
         }
-        print(title)
         collection.insert_one(post)
         return redirect('/')
 
