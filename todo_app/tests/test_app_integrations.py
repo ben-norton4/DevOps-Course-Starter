@@ -1,10 +1,11 @@
+import os
 import pytest
 import mongomock
 import pymongo
 from dotenv import load_dotenv, find_dotenv
 from todo_app.app import create_app
 from todo_app.trello_api_client import TrelloAPIClient
-from todo_app.tests.sample_data import sample_trello_boards, sample_trello_card, sample_trello_cards, sample_trello_list, sample_trello_lists, sample_card
+from todo_app.tests.sample_data import sample_trello_boards, sample_trello_card, sample_trello_cards, sample_trello_list, sample_trello_lists, sample_database_card, sample_form_input
 from unittest.mock import patch, Mock
 
 TEST_BOARD_ID = '604153265cd41321654ddebb'
@@ -25,33 +26,29 @@ def client():
         with test_app.test_client() as client:
             yield client
 
-@mongomock.patch(servers=(('fakemongo.com', 27017),))
-def test_create_todo_mongo():
+def test_create_todo_mongo(client):
     mock_mongo_client = pymongo.MongoClient('fakemongo.com')
-    mock_mongo_client.db.collection.insert_one(sample_card)
+    mock_mongo_client.db.collection.insert_one(sample_database_card)
     #I guess I need to assert that the collection has a thing in it
-    assert mock_mongo_client.db.collection.find({'name':sample_card['name']}) != None
+    assert mock_mongo_client.db.collection.find_one({'name':sample_database_card['name']}) != None
 
-@patch('requests.get')
-def test_index_page(mock_get_requests, client):
-    mock_get_requests.side_effect = mock_get_cards
+def test_index_page(client):
     response = client.get('/')
     assert response.status_code == 200
 
-@patch('requests.get')
+""" @patch('requests.get')
 def test_select_board(mock_get_requests, client):
     mock_get_requests.side_effect = mock_get_cards
     response = client.get(f'/select_board/{TEST_BOARD_ID}')
-    assert TEST_CARD_ID in str(response.data)
+    assert TEST_CARD_ID in str(response.data) """
 
-@patch('requests.post')
-@patch('requests.get')
-def test_create_todo(mock_get_requests, mock_post_requests, client):
-    mock_post_requests.side_effect = mock_create_card
-    mock_get_requests.side_effect = mock_get_cards
-    response = client.post(f'/create-todo/{TEST_BOARD_ID}')
-    assert mock_post_requests.call_count == 1
-    assert mock_get_requests.call_count == 1
+
+def test_create_todo(client):
+    mock_mongo_client = pymongo.MongoClient('fakemongo.com')
+    db = mock_mongo_client[os.getenv('DATABASE_NAME')]
+    collection = db['todo_app_items']
+    response = client.post(f'/create-todo/', data = sample_form_input)
+    assert collection.find_one({'name':sample_database_card['name']}) != None
     assert response.status_code in [301,302,303,307,308]
 
 @patch('requests.put')

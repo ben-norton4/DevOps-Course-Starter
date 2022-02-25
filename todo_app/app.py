@@ -1,5 +1,5 @@
 import os
-from pymongo import MongoClient
+import pymongo
 from bson.objectid import ObjectId
 from todo_app.trello_api_client import TrelloAPIClient
 from todo_app.item import Item
@@ -7,14 +7,15 @@ from todo_app.view_model import ViewModel
 from flask import Flask, render_template, request, redirect
 
 trello_api_client = TrelloAPIClient()
-mongo_db_client = MongoClient(os.getenv('DATABASE_CONNECTION_STRING'))
-db = mongo_db_client[os.getenv('DATABASE_NAME')]
-collection = db['todo_app_items']
 todo_status = 'To Do'
 doing_status = 'Doing'
 done_status = 'Done'
 
 def create_app():
+    mongo_db_client = pymongo.MongoClient(os.getenv('DATABASE_CONNECTION_STRING'))
+    db = mongo_db_client[os.getenv('DATABASE_NAME')]
+    collection = db['todo_app_items']
+
     app = Flask(__name__)
     app.config.from_object('todo_app.flask_config.Config')
     @app.route('/')
