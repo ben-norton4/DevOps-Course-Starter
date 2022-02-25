@@ -13,6 +13,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - run: docker build --target test --tag my-test-image .
-    - run: docker run --env-file .env.test my-test-image todo_app/tests
-    - run: docker run -e TRELLO_API_KEY=${{ secrets.TRELLO_API_KEY }} -e TRELLO_API_TOKEN=${{ secrets.TRELLO_API_TOKEN }} -e SECRET_KEY=${{ secrets.SECRET_KEY }} my-test-image todo_app/end_to_end_tests
+    - name: build test docker image
+      run: docker build --target test --tag my-test-image .
+    - name: run unit and integration tests in docker container
+      run: docker run --env-file .env.test my-test-image todo_app/tests
+    - name: run end-to-end tests in docker container
+      run: docker run -e TRELLO_API_KEY=${{ secrets.TRELLO_API_KEY }} -e TRELLO_API_TOKEN=${{ secrets.TRELLO_API_TOKEN }} -e SECRET_KEY=${{ secrets.SECRET_KEY }} my-test-image todo_app/end_to_end_tests
