@@ -5,9 +5,7 @@ from todo_app.app import create_app
 from todo_app.trello_api_client import TrelloAPIClient
 from threading import Thread
 from selenium import webdriver
-from selenium.webdriver.firefox.options import Options
-from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.common.by import By
+import time
 
 trello_api_client = TrelloAPIClient()
 test_board_name = 'E2E Test Board'
@@ -26,9 +24,11 @@ def app_with_temp_board():
 
 @pytest.fixture(scope='module')
 def driver():
-    options = Options()
-    options.headless = True
-    with webdriver.Firefox(options=options) as driver:
+    opts = webdriver.ChromeOptions()
+    opts.add_argument('--headless')
+    opts.add_argument('--no-sandbox')
+    opts.add_argument('--disable-dev-shm-usage')
+    with webdriver.Chrome(options=opts) as driver:
         yield driver
 
 def select_test_board(driver):
@@ -46,6 +46,7 @@ def create_test_item(driver, item_name):
     return card_title
 
 def test_task_journey(driver, app_with_temp_board):
+    time.sleep(5)
     driver.get('http://localhost:5000')
     assert driver.title == 'To-Do App'
 
@@ -62,7 +63,6 @@ def test_create_item(driver, app_with_temp_board):
     assert test_item_name in card_title.text
     driver.find_element_by_name('delete-button').click()
 
-
 def test_update_item(driver, app_with_temp_board):
     select_test_board(driver)
     board_name = driver.find_element_by_name('selected-board-name')
@@ -75,6 +75,7 @@ def test_update_item(driver, app_with_temp_board):
     driver.find_element_by_name('delete-button').click()
 
 def test_delete_item(driver, app_with_temp_board):
+    time.sleep(5)
     select_test_board(driver)
     board_name = driver.find_element_by_name('selected-board-name')
     assert board_name.text == test_board_name
