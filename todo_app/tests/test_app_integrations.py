@@ -5,7 +5,6 @@ import pymongo
 from dotenv import load_dotenv, find_dotenv
 from todo_app.app import create_app, todo_status, doing_status, done_status
 from todo_app.tests.sample_data import sample_database_card, sample_form_input
-from unittest.mock import Mock, patch
 
 @pytest.fixture
 def client():

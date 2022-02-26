@@ -1,12 +1,10 @@
 import os
 import pymongo
 from bson.objectid import ObjectId
-from todo_app.trello_api_client import TrelloAPIClient
 from todo_app.item import Item
 from todo_app.view_model import ViewModel
 from flask import Flask, render_template, request, redirect
 
-trello_api_client = TrelloAPIClient()
 todo_status = 'To Do'
 doing_status = 'Doing'
 done_status = 'Done'

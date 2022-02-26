@@ -17,23 +17,20 @@ def app_with_temp_database():
     thread.daemon = True
     thread.start()
     yield application
-    mongo_db_client = pymongo.MongoClient(os.getenv('DATABASE_CONNECTION_STRING'))
-    db = mongo_db_client[os.getenv('DATABASE_NAME')]
-    db.drop_database()
     thread.join(1)
-
+    mongo_db_client = pymongo.MongoClient(os.getenv('DATABASE_CONNECTION_STRING'))
+    mongo_db_client.drop_database(str([os.getenv('DATABASE_NAME')]))
 
 @pytest.fixture(scope='module')
 def driver():
     opts = webdriver.ChromeOptions()
-    #opts.add_argument('--headless')
+    opts.add_argument('--headless')
     opts.add_argument('--no-sandbox')
     opts.add_argument('--disable-dev-shm-usage')
     with webdriver.Chrome(options=opts) as driver:
         yield driver
 
 def create_test_item(driver, item_name, due_date, description):
-    driver.implicitly_wait(3)
     item_title = driver.find_element_by_name('title')
     item_title.send_keys(item_name)
     item_title = driver.find_element_by_name('due-date')
