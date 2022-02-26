@@ -1,3 +1,4 @@
+import os
 import pytest
 import pymongo
 from todo_app.app import create_app
@@ -7,6 +8,7 @@ from selenium import webdriver
 test_item_name = 'E2E Test Item'
 test_item_due_date = '01/01/2022'
 test_item_description = 'E2E Test Item Description'
+os.environ['DATABASE_NAME'] = 'test_todo_app_database'
 
 @pytest.fixture(scope='module')
 def app_with_temp_database():
@@ -15,7 +17,11 @@ def app_with_temp_database():
     thread.daemon = True
     thread.start()
     yield application
+    mongo_db_client = pymongo.MongoClient(os.getenv('DATABASE_CONNECTION_STRING'))
+    db = mongo_db_client[os.getenv('DATABASE_NAME')]
+    db.drop_database()
     thread.join(1)
+
 
 @pytest.fixture(scope='module')
 def driver():
