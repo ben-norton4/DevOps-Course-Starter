@@ -47,16 +47,17 @@ def test_create_item(driver, app_with_temp_database):
     assert test_item_name in card_title.text
     driver.find_element_by_name('to-do-delete-button').click()
 
-""" def test_update_item(driver, app_with_temp_database):
+def test_update_item(driver, app_with_temp_database):
     card_title = create_test_item(driver, test_item_name, test_item_due_date, test_item_description)
     assert test_item_name in card_title.text
-    driver.find_element_by_name('doing-button').click()
-    assert driver.page_source.find('Doing: ' + test_item_name) > 0
-    driver.find_element_by_name('delete-button').click()
+    driver.find_element_by_name('to-do-doing-button').click()
+    title_text = driver.find_element_by_name('doing-card-title').text
+    assert title_text == test_item_name
+    driver.find_element_by_name('doing-delete-button').click()
 
 def test_delete_item(driver, app_with_temp_database):
-    card_title = create_test_item(driver, test_item_name)
+    card_title = create_test_item(driver, test_item_name, test_item_due_date, test_item_description)
     assert test_item_name in card_title.text
-    driver.find_element_by_name('delete-button').click()
+    driver.find_element_by_name('to-do-delete-button').click()
     driver.implicitly_wait(3)
-    assert driver.page_source.find(test_item_name) == -1 """
+    assert driver.page_source.find(test_item_name) == -1
