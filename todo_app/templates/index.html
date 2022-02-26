@@ -41,13 +41,13 @@
                     <p class="card-text">Due Date: {{ item.due_date }}</p>
                     <div class="btn-group">
                       <form action="{{ url_for('doing', id=item.id) }}" method="post">
-                        <button type="submit" name="doing-button" class="btn btn-outline-primary mr-1">Doing</button>
+                        <button type="submit" name="to-do-doing-button" class="btn btn-outline-primary mr-1">Doing</button>
                       </form>
                       <form action="{{ url_for('done', id=item.id) }}" method="post">
-                        <button type="submit" name="done-button" class="btn btn-outline-success mr-1">Done</button>
+                        <button type="submit" name="to-do-done-button" class="btn btn-outline-success mr-1">Done</button>
                       </form>
                       <form action="{{ url_for('delete', id=item.id) }}" method="post">
-                        <button type="submit" name="delete-button" class="btn btn-outline-danger mr-1">Delete</button>
+                        <button type="submit" name="to-do-delete-button" class="btn btn-outline-danger mr-1">Delete</button>
                       </form>
                     </div>
                   </div>
@@ -65,13 +65,13 @@
                     <p class="card-text">Due Date: {{ item.due_date }}</p>
                     <div class="btn-group">
                       <form action="{{ url_for('to_do', id=item.id) }}" method="post">
-                        <button type="submit" name="to-do-button" class="btn btn-outline-dark mr-1">To-Do</button>
+                        <button type="submit" name="doing-to-do-button" class="btn btn-outline-dark mr-1">To-Do</button>
                       </form>
                       <form action="{{ url_for('done', id=item.id) }}" method="post">
-                        <button type="submit" name="done-button" class="btn btn-outline-success mr-1">Done</button>
+                        <button type="submit" name="doing-done-button" class="btn btn-outline-success mr-1">Done</button>
                       </form>
                       <form action="{{ url_for('delete', id=item.id) }}" method="post">
-                        <button type="submit" name="delete-button" class="btn btn-outline-danger mr-1">Delete</button>
+                        <button type="submit" name="doing-delete-button" class="btn btn-outline-danger mr-1">Delete</button>
                       </form>
                     </div>
                   </div>
@@ -89,13 +89,13 @@
                     <p class="card-text">Due Date: {{ item.due_date }}</p>
                     <div class="btn-group">
                       <form action="{{ url_for('to_do', id=item.id) }}" method="post">
-                        <button type="submit" name="to-do-button" class="btn btn-outline-dark mr-1">To-Do</button>
+                        <button type="submit" name="done-to-do-button" class="btn btn-outline-dark mr-1">To-Do</button>
                       </form>
                       <form action="{{ url_for('doing', id=item.id) }}" method="post">
-                        <button type="submit" name="doing-button" class="btn btn-outline-primary mr-1">Doing</button>
+                        <button type="submit" name="done-doing-button" class="btn btn-outline-primary mr-1">Doing</button>
                       </form>
                       <form action="{{ url_for('delete', id=item.id) }}" method="post">
-                        <button type="submit" name="delete-button" class="btn btn-outline-danger mr-1">Delete</button>
+                        <button type="submit" name="done-delete-button" class="btn btn-outline-danger mr-1">Delete</button>
                       </form>
                     </div>
                   </div>

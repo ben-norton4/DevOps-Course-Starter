@@ -41,7 +41,7 @@ def create_app():
         collection.insert_one(post)
         return redirect('/')
 
-    @app.route('/to-do/<id>', methods=['POST'])
+    @app.route('/todo/<id>', methods=['POST'])
     def to_do(id):
         query = {'_id': ObjectId(id)}
         update_values = {'$set': {'status':todo_status}}
