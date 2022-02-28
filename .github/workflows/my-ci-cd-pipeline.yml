@@ -1,14 +1,29 @@
-name: Continuous Deployment
-on:
+name: Continuous Integration
+on: 
   push:
-    branches:
-      - exercise-8
+    paths-ignore:
+      - 'README.md'
+  pull_request:
     paths-ignore:
       - 'README.md'
 
 jobs:
-  build:
+  test:
+    name: Build and test
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: build test docker image
+      run: docker build --target test --tag my-test-image .
+    - name: run unit and integration tests in docker container
+      run: docker run --env-file .env.test my-test-image todo_app/tests
+    - name: run end-to-end tests in docker container
+      run: docker run -e TRELLO_API_KEY=${{ secrets.TRELLO_API_KEY }} -e TRELLO_API_TOKEN=${{ secrets.TRELLO_API_TOKEN }} -e SECRET_KEY=${{ secrets.SECRET_KEY }} my-test-image todo_app/end_to_end_tests
+
+  deploy:
     name: Deploy into production
+    needs: test
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
     runs-on: ubuntu-latest
     env:
       HEROKU_API_KEY: "${{ secrets.HEROKU_TOKEN }}"
