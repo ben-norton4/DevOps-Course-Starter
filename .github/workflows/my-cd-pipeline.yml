@@ -2,7 +2,7 @@ name: Continuous Deployment
 on:
   push:
     branches:
-      - main
+      - exercise-8
     paths-ignore:
       - 'README.md'
 
@@ -10,6 +10,8 @@ jobs:
   build:
     name: Deploy into production
     runs-on: ubuntu-latest
+    env:
+      HEROKU_API_KEY: "${{ secrets.HEROKU_TOKEN }}"
     steps:
     - uses: actions/checkout@v1
     - name: login to dockerhub
@@ -23,8 +25,8 @@ jobs:
     - name: tag production image for deployment to heroku
       run: docker tag ${{ secrets.DOCKER_LOGIN }}/todo-app-production:${GITHUB_SHA::6} registry.heroku.com/todo-app-devops-academy/web
     - name: login to docker on the heroku registry
-      run: docker login --username=_ --password=${{ secrets.HEROKU_TOKEN }} registry.heroku.com
+      run: docker login --username=_ --password=$HEROKU_API_KEY registry.heroku.com
     - name: push production image to heroku registry
       run: docker push registry.heroku.com/todo-app-devops-academy/web
     - name: release the container on the heroku registry
-      run: HEROKU_API_KEY=${{ secrets.HEROKU_TOKEN }} heroku container:release -a todo-app-devops-academy web
+      run: HEROKU_API_KEY=$HEROKU_API_KEY heroku container:release -a todo-app-devops-academy web
