@@ -17,7 +17,7 @@ jobs:
     - name: login to dockerhub
       run: echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_LOGIN }} --password-stdin
     - name: build production docker image
-      run: docker build --target production --tag ${{ secrets.DOCKER_LOGIN }}/todo-app-production:${GITHUB_SHA::6} .
+      run: docker build --target production --tag ${{ secrets.DOCKER_LOGIN }}/todo-app-production:${GITHUB_SHA::6} --tag ${{ secrets.DOCKER_LOGIN }}/todo-app-production:latest .
     - name: push build to dockerhub
       run: docker push ${{ secrets.DOCKER_LOGIN }}/todo-app-production:${GITHUB_SHA::6}
     - name: pull production image from dockerhub
