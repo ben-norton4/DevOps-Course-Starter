@@ -16,7 +16,9 @@ def create_app():
 
     app = Flask(__name__)
     app.config.from_object('todo_app.flask_config.Config')
+
     @app.route('/')
+    @login_required
     def index():
         items = collection.find()
         cards = []
