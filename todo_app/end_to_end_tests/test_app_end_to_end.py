@@ -5,6 +5,7 @@ from todo_app.app import create_app
 from todo_app.trello_api_client import TrelloAPIClient
 from threading import Thread
 from selenium import webdriver
+import time
 
 trello_api_client = TrelloAPIClient()
 test_board_name = 'E2E Test Board'
@@ -45,6 +46,7 @@ def create_test_item(driver, item_name):
     return card_title
 
 def test_task_journey(driver, app_with_temp_board):
+    time.sleep(5)
     driver.get('http://localhost:5000')
     assert driver.title == 'To-Do App'
 
@@ -73,6 +75,7 @@ def test_update_item(driver, app_with_temp_board):
     driver.find_element_by_name('delete-button').click()
 
 def test_delete_item(driver, app_with_temp_board):
+    time.sleep(5)
     select_test_board(driver)
     board_name = driver.find_element_by_name('selected-board-name')
     assert board_name.text == test_board_name
