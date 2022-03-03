@@ -147,7 +147,7 @@ To build and run integration tests in a test container use the below commands (o
 $ docker build --target test --tag todo-app:test .
 ```
 ```
-$ docker run -d --env-file .env.test -p 5000:5000 todo-app:test todo_app/tests
+$ docker run --env-file .env.test -p 5000:5000 todo-app:test todo_app/tests
 ```
 
 To build and run end-to-end tests in a test container use the below commands (or similar depending on your setup):
@@ -155,5 +155,5 @@ To build and run end-to-end tests in a test container use the below commands (or
 $ docker build --target test --tag todo-app:test .
 ```
 ```
-$ docker run -d --env-file .env -p 5000:5000 todo-app:test todo_app/end_to_end_tests
+$ docker run --env-file .env -p 5000:5000 todo-app:test todo_app/end_to_end_tests
 ```

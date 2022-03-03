@@ -10,17 +10,16 @@ COPY . /app
 FROM base as production
 ENV FLASK_ENV=production
 # Install the project dependencies
-
 RUN poetry config virtualenvs.create false --local && poetry install --no-dev
 # Run as production on startup of the container
 RUN chmod +x ./entrypoint.sh
+ENV PORT=5000
 ENTRYPOINT ./entrypoint.sh
 
 FROM base as development
 ENV FLASK_ENV=development
 # Install the project dependencies
 RUN poetry install
-
 # Run as development on startup of the container
 ENTRYPOINT ["poetry", "run", "flask", "run", "--host=0.0.0.0", "--port=5000"]
 

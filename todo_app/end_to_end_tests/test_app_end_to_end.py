@@ -4,6 +4,7 @@ import pymongo
 from todo_app.app import create_app
 from threading import Thread
 from selenium import webdriver
+import time
 
 test_item_name = 'E2E Test Item'
 test_item_due_date = '01/01/2022'
