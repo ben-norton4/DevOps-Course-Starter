@@ -7,7 +7,7 @@ from selenium import webdriver
 import time
 
 test_item_name = 'E2E Test Item'
-test_item_due_date = '01/01/2022'
+test_item_due_date = '01/01/2023'
 test_item_description = 'E2E Test Item Description'
 os.environ['DATABASE_NAME'] = 'test_todo_app_database'
 
