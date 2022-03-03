@@ -141,3 +141,19 @@ $ docker build --target production --tag todo-app:prod .
 ```
 $ docker run -d --env-file ./.env -p 5000:5000 todo-app:prod
 ```
+
+To build and run integration tests in a test container use the below commands (or similar depending on your setup):
+```
+$ docker build --target test --tag todo-app:test .
+```
+```
+$ docker run --env-file .env.test -p 5000:5000 todo-app:test todo_app/tests
+```
+
+To build and run end-to-end tests in a test container use the below commands (or similar depending on your setup):
+```
+$ docker build --target test --tag todo-app:test .
+```
+```
+$ docker run --env-file .env -p 5000:5000 todo-app:test todo_app/end_to_end_tests
+```
