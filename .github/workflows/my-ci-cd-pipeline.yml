@@ -18,7 +18,7 @@ jobs:
     - name: run unit and integration tests in docker container
       run: docker run --env-file .env.test my-test-image todo_app/tests
     - name: run end-to-end tests in docker container
-      run: docker run --env DATABASE_CONNECTION_STRING=${{ secrets.DATABASE_CONNECTION_STRING }} --env DATABASE_NAME=${{ secrets.DATABASE_NAME }} --env SECRET_KEY=${{ secrets.SECRET_KEY }} my-test-image todo_app/end_to_end_tests
+      run: docker run --env DATABASE_CONNECTION_STRING="${{ secrets.DATABASE_CONNECTION_STRING }}" --env DATABASE_NAME=${{ secrets.DATABASE_NAME }} --env SECRET_KEY=${{ secrets.SECRET_KEY }} my-test-image todo_app/end_to_end_tests
 
   deploy:
     name: Deploy into production
