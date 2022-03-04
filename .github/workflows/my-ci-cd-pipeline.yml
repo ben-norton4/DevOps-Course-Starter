@@ -18,7 +18,7 @@ jobs:
     - name: run unit and integration tests in docker container
       run: docker run --env-file .env.test my-test-image todo_app/tests
     - name: run end-to-end tests in docker container
-      run: docker run -e TRELLO_API_KEY=${{ secrets.TRELLO_API_KEY }} -e TRELLO_API_TOKEN=${{ secrets.TRELLO_API_TOKEN }} -e SECRET_KEY=${{ secrets.SECRET_KEY }} my-test-image todo_app/end_to_end_tests
+      run: docker run -e DATABASE_CONNECTION_STRING=${{ secrets.DATABASE_CONNECTION_STRING }} -e DATABASE_NAME=${{ secrets.DATABASE_NAME }} -e SECRET_KEY=${{ secrets.SECRET_KEY }} my-test-image todo_app/end_to_end_tests
 
   deploy:
     name: Deploy into production
@@ -47,3 +47,4 @@ jobs:
       run: docker push registry.heroku.com/todo-app-devops-academy/web
     - name: release the container on the heroku registry
       run: HEROKU_API_KEY=$HEROKU_API_KEY heroku container:release -a todo-app-devops-academy web
+      
