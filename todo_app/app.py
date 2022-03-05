@@ -4,6 +4,7 @@ from bson.objectid import ObjectId
 from todo_app.item import Item
 from todo_app.view_model import ViewModel
 from flask import Flask, render_template, request, redirect
+from flask_login import LoginManager, login_required
 
 todo_status = 'To Do'
 doing_status = 'Doing'
@@ -16,6 +17,20 @@ def create_app():
 
     app = Flask(__name__)
     app.config.from_object('todo_app.flask_config.Config')
+
+    login_manager = LoginManager()
+    @login_manager.unauthorized_handler
+    def unauthenticated():
+        return redirect('https://github.com/login/oauth/authorize?client_id=83ee981e08ce78157e59')
+
+    # Add logic to redirect to the              
+    # Github OAuth flow when unauthenticated     
+    
+    @login_manager.user_loader     
+    def load_user(user_id):         
+        return None     
+    
+    login_manager.init_app(app) 
 
     @app.route('/')
     @login_required
