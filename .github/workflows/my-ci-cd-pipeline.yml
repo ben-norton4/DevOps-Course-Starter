@@ -47,4 +47,3 @@ jobs:
       run: docker push registry.heroku.com/todo-app-devops-academy/web
     - name: release the container on the heroku registry
       run: HEROKU_API_KEY="$HEROKU_API_KEY" heroku container:release -a todo-app-devops-academy web
-      
