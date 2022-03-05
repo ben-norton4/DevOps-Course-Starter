@@ -18,33 +18,33 @@ jobs:
     - name: run unit and integration tests in docker container
       run: docker run --env-file .env.test my-test-image todo_app/tests
     - name: run end-to-end tests in docker container
-      run: docker run --env DATABASE_CONNECTION_STRING="${{ secrets.DATABASE_CONNECTION_STRING }}" --env DATABASE_NAME=${{ secrets.DATABASE_NAME }} --env SECRET_KEY=${{ secrets.SECRET_KEY }} my-test-image todo_app/end_to_end_tests
+      run: docker run --env DATABASE_CONNECTION_STRING="${{ secrets.DATABASE_CONNECTION_STRING }}" --env DATABASE_NAME="${{ secrets.DATABASE_NAME }}"" --env SECRET_KEY="${{ secrets.SECRET_KEY }}"" my-test-image todo_app/end_to_end_tests
 
   deploy:
     name: Deploy into production
     needs: test
-    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    if: github.ref == 'refs/heads/exercise-9' && github.event_name == 'push'
     runs-on: ubuntu-latest
     env:
       HEROKU_API_KEY: "${{ secrets.HEROKU_TOKEN }}"
     steps:
     - uses: actions/checkout@v1
     - name: login to dockerhub
-      run: echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_LOGIN }} --password-stdin
+      run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_LOGIN }}" --password-stdin
     - name: build production docker image
-      run: docker build --target production --tag ${{ secrets.DOCKER_LOGIN }}/todo-app-production:${GITHUB_SHA::6} --tag ${{ secrets.DOCKER_LOGIN }}/todo-app-production:latest .
+      run: docker build --target production --tag "${{ secrets.DOCKER_LOGIN }}"/todo-app-production:"${GITHUB_SHA::6}"" --tag "${{ secrets.DOCKER_LOGIN }}"/todo-app-production:latest .
     - name: push commit hash tagged build to dockerhub
-      run: docker push ${{ secrets.DOCKER_LOGIN }}/todo-app-production:${GITHUB_SHA::6}
+      run: docker push "${{ secrets.DOCKER_LOGIN }}"/todo-app-production:${GITHUB_SHA::6}
     - name: push latest tagged build to dockerhub
-      run: docker push ${{ secrets.DOCKER_LOGIN }}/todo-app-production:latest
+      run: docker push "${{ secrets.DOCKER_LOGIN }}"/todo-app-production:latest
     - name: pull production image from dockerhub
-      run: docker pull ${{ secrets.DOCKER_LOGIN }}/todo-app-production:latest
+      run: docker pull "${{ secrets.DOCKER_LOGIN }}"/todo-app-production:latest
     - name: tag production image for deployment to heroku
-      run: docker tag ${{ secrets.DOCKER_LOGIN }}/todo-app-production:latest registry.heroku.com/todo-app-devops-academy/web
+      run: docker tag "${{ secrets.DOCKER_LOGIN }}"/todo-app-production:latest registry.heroku.com/todo-app-devops-academy/web
     - name: login to docker on the heroku registry
-      run: docker login --username=_ --password=$HEROKU_API_KEY registry.heroku.com
+      run: docker login --username=_ --password="$HEROKU_API_KEY" registry.heroku.com
     - name: push production image to heroku registry
       run: docker push registry.heroku.com/todo-app-devops-academy/web
     - name: release the container on the heroku registry
-      run: HEROKU_API_KEY=$HEROKU_API_KEY heroku container:release -a todo-app-devops-academy web
+      run: HEROKU_API_KEY="$HEROKU_API_KEY" heroku container:release -a todo-app-devops-academy web
       
