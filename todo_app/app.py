@@ -1,10 +1,13 @@
 import os
+from urllib import response
+import requests
+from oauthlib.oauth2 import WebApplicationClient
 import pymongo
 from bson.objectid import ObjectId
 from todo_app.item import Item
 from todo_app.view_model import ViewModel
-from flask import Flask, render_template, request, redirect
-from flask_login import LoginManager, login_required
+from flask import Flask, render_template, request, redirect, session
+from flask_login import LoginManager, login_required, UserMixin, login_user
 
 todo_status = 'To Do'
 doing_status = 'Doing'
@@ -17,20 +20,43 @@ def create_app():
 
     app = Flask(__name__)
     app.config.from_object('todo_app.flask_config.Config')
-
     login_manager = LoginManager()
+
+    web_application_client = WebApplicationClient(os.getenv('CLIENT_ID'))
+
     @login_manager.unauthorized_handler
     def unauthenticated():
-        return redirect('https://github.com/login/oauth/authorize?client_id=83ee981e08ce78157e59')
-
-    # Add logic to redirect to the              
-    # Github OAuth flow when unauthenticated     
+        return redirect(web_application_client.prepare_request_uri('https://github.com/login/oauth/authorize'))
     
+    class User(UserMixin):
+        def __init__(self, id):
+            self.id = id
+
     @login_manager.user_loader     
     def load_user(user_id):         
-        return None     
+        pass  
     
     login_manager.init_app(app) 
+
+    @app.route('/login/callback', methods=['GET'])
+    def login_user_callback():
+        data = web_application_client.prepare_request_body(
+            code = request.args['code'],
+            redirect_uri = request.url,
+            client_id = os.getenv('CLIENT_ID'),
+            client_secret = os.getenv('CLIENT_SECRET')
+        )
+
+        response = requests.post('https://github.com/login/oauth/access_token', data=data)
+        web_application_client.parse_request_body_response(response.text)
+        access_token = web_application_client.token['access_token']
+        header = {'Authorization': f'Bearer {access_token}'}
+        response = requests.get('https://api.github.com/user', headers=header).json()
+
+        user_id = response['id']
+        user = User(user_id)
+        login_user(user)
+        return user
 
     @app.route('/')
     @login_required
