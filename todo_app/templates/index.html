@@ -7,6 +7,8 @@
   </div>
   <div class="card border-dark text-dark bg-light mb-2">
     <div class="card-body">
+
+      {% if is_writer %}
       <div class="mb-4">
         <h2 class="font-weight-light">Add item</h2>
         <form action="{{ url_for('create_todo') }}" method="post">
@@ -27,6 +29,9 @@
           </form>
         </form>
       </div>
+      {% endif %}
+
+
       <div class="row">
         <div class="col-md-12">
           <ul class="list-group mb-1">
@@ -39,6 +44,7 @@
                     <h5 class="card-title mb-3" name="to-do-card-title">{{ item.name }}</h5>
                     <p class="card-text">{{ item.description }}</p>
                     <p class="card-text">Due Date: {{ item.due_date }}</p>
+                    {% if is_writer %}
                     <div class="btn-group">
                       <form action="{{ url_for('doing', id=item.id) }}" method="post">
                         <button type="submit" name="to-do-doing-button" class="btn btn-outline-primary mr-1">Doing</button>
@@ -50,6 +56,7 @@
                         <button type="submit" name="to-do-delete-button" class="btn btn-outline-danger mr-1">Delete</button>
                       </form>
                     </div>
+                    {% endif %}
                   </div>
                 </div>
               </li>
@@ -63,6 +70,7 @@
                     <h5 class="card-title mb-3" name="doing-card-title">{{ item.name }}</h5>
                     <p class="card-text">{{ item.description }}</p>
                     <p class="card-text">Due Date: {{ item.due_date }}</p>
+                    {% if is_writer %}
                     <div class="btn-group">
                       <form action="{{ url_for('to_do', id=item.id) }}" method="post">
                         <button type="submit" name="doing-to-do-button" class="btn btn-outline-dark mr-1">To-Do</button>
@@ -74,6 +82,7 @@
                         <button type="submit" name="doing-delete-button" class="btn btn-outline-danger mr-1">Delete</button>
                       </form>
                     </div>
+                    {% endif %}
                   </div>
                 </div>
               </li>
@@ -87,6 +96,7 @@
                     <h5 class="card-title mb-3" name="done-card-title">{{ item.name }}</h5>
                     <p class="card-text">{{ item.description }}</p>
                     <p class="card-text">Due Date: {{ item.due_date }}</p>
+                    {% if is_writer %}
                     <div class="btn-group">
                       <form action="{{ url_for('to_do', id=item.id) }}" method="post">
                         <button type="submit" name="done-to-do-button" class="btn btn-outline-dark mr-1">To-Do</button>
@@ -98,6 +108,7 @@
                         <button type="submit" name="done-delete-button" class="btn btn-outline-danger mr-1">Delete</button>
                       </form>
                     </div>
+                    {% endif %}
                   </div>
                 </div>
               </li>
