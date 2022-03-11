@@ -20,6 +20,7 @@ def create_app():
 
     app = Flask(__name__)
     app.config.from_object('todo_app.flask_config.Config')
+    app.secret_key = os.getenv('SECRET_KEY')
     login_manager = LoginManager()
 
     web_application_client = WebApplicationClient(os.getenv('CLIENT_ID'))
@@ -34,12 +35,12 @@ def create_app():
 
     @login_manager.user_loader     
     def load_user(user_id):         
-        pass  
+        user = User(user_id)  
     
     login_manager.init_app(app) 
 
     @app.route('/login/callback', methods=['GET'])
-    def login_user_callback():
+    def login_user_callback():    
         data = web_application_client.prepare_request_body(
             code = request.args['code'],
             redirect_uri = request.url,
@@ -56,7 +57,7 @@ def create_app():
         user_id = response['id']
         user = User(user_id)
         login_user(user)
-        return user
+        return redirect('/')
 
     @app.route('/')
     @login_required
