@@ -1,9 +1,9 @@
 from operator import truediv
 import os
-from urllib import response
 import requests
 from oauthlib.oauth2 import WebApplicationClient
 import pymongo
+from datetime import datetime
 from bson.objectid import ObjectId
 from todo_app.item import Item
 from todo_app.view_model import ViewModel
@@ -14,7 +14,7 @@ todo_status = 'To Do'
 doing_status = 'Doing'
 done_status = 'Done'
 
-#ToDo: change this out to work with a database admin user-role
+#ToDo: change this out to work with a database user-role
 writer_user_id = '78470201'
 
 def create_app():
@@ -75,7 +75,7 @@ def create_app():
         items = collection.find()
         cards = []
         for item in items:
-            cards.append(Item(item['_id'], item['name'], item['description'], item['due_date'], item['status']))
+            cards.append(Item(item['_id'], item['name'], item['description'], item['due_date'].strftime('%d/%m/%Y') , item['status']))
         item_view_model = ViewModel(cards)
         return render_template('index.html', view_model = item_view_model, is_writer = is_writer())
 
@@ -90,7 +90,7 @@ def create_app():
         post = {
             'name': title,
             'description': desc,
-            'due_date': Item.datetime_formatted_as_date(due),
+            'due_date': datetime.fromisoformat(due),
             'status': todo_status
         }
         collection.insert_one(post)
