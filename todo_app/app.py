@@ -1,59 +1,70 @@
-from todo_app.trello_api_client import TrelloAPIClient
+import os
+import pymongo
+from bson.objectid import ObjectId
+from todo_app.item import Item
 from todo_app.view_model import ViewModel
 from flask import Flask, render_template, request, redirect
 
-trello_api_client = TrelloAPIClient()
+todo_status = 'To Do'
+doing_status = 'Doing'
+done_status = 'Done'
 
 def create_app():
+    mongo_db_client = pymongo.MongoClient(os.getenv('DATABASE_CONNECTION_STRING'))
+    db = mongo_db_client[os.getenv('DATABASE_NAME')]
+    collection = db['todo_app_items']
+
     app = Flask(__name__)
     app.config.from_object('todo_app.flask_config.Config')
-
     @app.route('/')
     def index():
-        boards = trello_api_client.get_boards()
-        selected_board = boards[0]
+        items = collection.find()
+        cards = []
+        for item in items:
+            cards.append(Item(item['_id'], item['name'], item['description'], item['due_date'], item['status']))
+        item_view_model = ViewModel(cards)
+        return render_template('index.html', view_model = item_view_model)
 
-        for board in boards:
-            if board.name == 'ToDo App':
-                selected_board = board
-                break
-        
-        board_id = selected_board.id
-        return redirect(f'/select_board/{board_id}')
-
-    @app.route('/select_board/<id>', methods=['GET'])
-    def select_board(id):
-        boards = trello_api_client.get_boards()
-        
-        for board in boards:
-            if board.id == id:
-                selected_board = board
-                break
-
-        selected_board_items = trello_api_client.get_items_on_a_board(selected_board.id)
-        selected_board_lists = trello_api_client.get_lists_on_a_board(selected_board.id)
-        item_view_model = ViewModel(selected_board_items)
-        return render_template('index.html', selected_board = selected_board, selected_board_lists = selected_board_lists, view_model = item_view_model, boards = boards)
-
-    @app.route('/create-todo/<board_id>', methods=['POST'])
-    def create_todo(board_id):
+    @app.route('/create-todo/', methods=['POST'])
+    def create_todo():
         title = request.form.get('title')
         desc = request.form.get('description')
         due = request.form.get('due-date')
-        list = request.form.get('list')
-        trello_api_client.create_item(list, title, desc, due)
-        
-        return redirect(f'/select_board/{board_id}')
+        post = {
+            'name': title,
+            'description': desc,
+            'due_date': Item.datetime_formatted_as_date(due),
+            'status': todo_status
+        }
+        collection.insert_one(post)
+        return redirect('/')
 
-    @app.route('/update_status/<board_id>/<list_id>/<id>', methods=['POST'])
-    def update_status(board_id, list_id, id):
-        trello_api_client.update_item_status(id, list_id)
-        return redirect(f'/select_board/{board_id}')
+    @app.route('/todo/<id>', methods=['POST'])
+    def to_do(id):
+        query = {'_id': ObjectId(id)}
+        update_values = {'$set': {'status':todo_status}}
+        collection.update_one(query, update_values)
+        return redirect('/')
 
-    @app.route('/delete/<board_id>/<id>', methods=['POST'])
-    def delete(board_id, id):
-        trello_api_client.delete_item(id)
-        return redirect(f'/select_board/{board_id}')
+    @app.route('/doing/<id>', methods=['POST'])
+    def doing(id):
+        query = {'_id': ObjectId(id)}
+        update_values = {'$set': {'status':doing_status}}
+        collection.update_one(query, update_values)
+        return redirect('/')
+
+    @app.route('/done/<id>', methods=['POST'])
+    def done(id):
+        query = {'_id': ObjectId(id)}
+        update_values = {'$set': {'status':done_status}}
+        collection.update_one(query, update_values)
+        return redirect('/')
+
+    @app.route('/delete/<id>', methods=['POST'])
+    def delete(id):
+        query = {'_id': ObjectId(id)}
+        collection.delete_one(query)
+        return redirect('/')
 
     return app
 

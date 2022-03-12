@@ -6,12 +6,12 @@ from todo_app.item import Item
 @pytest.fixture
 def view_model() -> ViewModel:
     items = [
-        Item(1, 'Test to do', None, None, None, None, 'To Do'),
-        Item(2, 'Test doing', None, None, None, None, 'Doing'),
-        Item(3, 'Test doing II', None, None, None, None, 'Doing'),
-        Item(4, 'Test done', None, None, None, None, 'Done'),
-        Item(5, 'Test done II', None, None, None, None, 'Done'),
-        Item(6, 'Test done III', None, None, None, None, 'Done')
+        Item(1, 'Test to do', None, None, 'To Do'),
+        Item(2, 'Test doing', None, None, 'Doing'),
+        Item(3, 'Test doing II', None, None, 'Doing'),
+        Item(4, 'Test done', None, None, 'Done'),
+        Item(5, 'Test done II', None, None, 'Done'),
+        Item(6, 'Test done III', None, None, 'Done')
     ]
     view_model = ViewModel(items)
     return view_model

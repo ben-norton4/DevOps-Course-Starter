@@ -32,7 +32,7 @@ $ cp .env.template .env  # (first time only)
 
 The `.env` file is used by flask to set environment variables when running `flask run`. This enables things like development mode (which also enables features like hot reloading when you make a file change). There's also a [SECRET_KEY](https://flask.palletsprojects.com/en/1.1.x/config/#SECRET_KEY) variable which is used to encrypt the flask session cookie. 
 
-To call the Trello API you will need to set environment variables for a [TRELLO_API_KEY] and [TRELLO_API_TOKEN] in the .env file. To create these you will need to set up a Trello account here: https://trello.com/signup and generate an API key and API token by following the instructions here: https://trello.com/app-key.
+To call the Trello API you will need to set environment variables for a [DATABASE_CONNECTION_STRING] and [DATABASE_NAME] in the .env file. To create these you will need to set up a MongoDB Atlas cluster here: https://www.mongodb.com/atlas/database and create an admin database access user with username and password credentials. Use an IP of 0.0.0/0 to allow access from anywhere. Connect to the cluster by setting the DATABASE_CONNECTION_STRING environment variable equal to the connection string. 
 
 ## Running the App
 
@@ -112,13 +112,14 @@ Prerequisites:
 
 1. Configure your host machine system and install Docker Desktop using these instructions: https://docs.docker.com/get-docker/
 
-To run a docker container you will need to create an .env file in the root of the project containing the below variables (note the TRELLO_API_KEY and TRELLO_API_TOKEN values should be replaced with your own trello values):
+To run a docker container you will need to create an .env file in the root of the project containing the below variables (note the PORT, DATABASE_CONNECTION_STRING and DATABASE_NAME values should be replaced with your own values for port to use and MongoDB credentials):
 ```
 FLASK_APP=todo_app/app
 FLASK_ENV=development
 SECRET_KEY=secret-key
-TRELLO_API_KEY=your_trello_api_key
-TRELLO_API_TOKEN=your_trello_api_token
+PORT=port_number
+DATABASE_CONNECTION_STRING=mongo_database_connection_string
+DATABASE_NAME=mongo_database_name
 ```
 
 To build and run the prod and dev containers using docker compose use the below command:
