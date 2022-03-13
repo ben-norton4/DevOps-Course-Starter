@@ -157,8 +157,6 @@ def create_app():
         query = {'github_id': id}
         update_values = {'$set': {'user_role':user_role}}
         users_collection.update_one(query, update_values)
-        print(id)
-        print(user_role)
         return redirect('/users')
 
     return app
