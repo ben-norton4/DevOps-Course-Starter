@@ -1,6 +1,3 @@
-from calendar import c
-from imp import new_module
-from operator import truediv
 import os
 import requests
 from oauthlib.oauth2 import WebApplicationClient
@@ -105,7 +102,7 @@ def create_app():
     def create_todo():
         if not is_writer():
             return redirect('/')
-        
+          
         title = request.form.get('title')
         desc = request.form.get('description')
         due = request.form.get('due-date')
