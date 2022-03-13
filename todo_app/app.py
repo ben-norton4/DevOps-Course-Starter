@@ -1,4 +1,5 @@
 from calendar import c
+from imp import new_module
 from operator import truediv
 import os
 import requests
@@ -15,9 +16,6 @@ todo_status = 'To Do'
 doing_status = 'Doing'
 done_status = 'Done'
 
-#ToDo: change this out to work with a database user-role
-writer_user_id = '78470201'
-
 def create_app():
     mongo_db_client = pymongo.MongoClient(os.getenv('DATABASE_CONNECTION_STRING'))
     db = mongo_db_client[os.getenv('DATABASE_NAME')]
@@ -32,10 +30,8 @@ def create_app():
     web_application_client = WebApplicationClient(os.getenv('CLIENT_ID'))
 
     class User(UserMixin):
-        def __init__(self, id, user_role='reader'):
+        def __init__(self, id):
             self.github_id = id
-            if id == writer_user_id:
-                self.user_role = 'admin'
 
     @login_manager.unauthorized_handler
     def unauthenticated():
@@ -43,7 +39,11 @@ def create_app():
     
     @login_manager.user_loader     
     def load_user(user_id):         
-        user = User(user_id)  
+        user = User(user_id)
+        query = {'github_id': user_id}
+        db_user = users_collection.find_one(query)
+        user.name = db_user['name']
+        user.user_role = db_user['user_role']
         return user
     
     login_manager.init_app(app)
@@ -62,8 +62,27 @@ def create_app():
         header = {'Authorization': f'Bearer {access_token}'}
         response = requests.get('https://api.github.com/user', headers=header).json()
         github_id = response['id']
-        user = User(github_id)
-        login_user(user)
+        
+        query = {'github_id': github_id}
+        db_user = users_collection.find_one(query)
+        
+        if(db_user) == None:
+            items = collection.find()
+            if(items.count() == 0):
+                user_role = 'admin'
+            else:
+                user_role = 'reader'
+            
+            post = {
+                'name': response['login'],
+                'github_id': github_id,
+                'user_role': user_role
+            }
+            users_collection.insert_one(post)
+            db_user = users_collection.find_one(query)
+
+        user = User(db_user['github_id'])
+        login_user(user.github_id)
         return redirect('/')
 
     def is_writer():
@@ -160,8 +179,6 @@ def create_app():
         return redirect('/users')
 
     return app
-
-    
 
 if __name__ == '__main__':
     app = create_app()
