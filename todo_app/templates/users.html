@@ -1,0 +1,27 @@
+{% extends "layout.html" %}
+{% block title %}To-Do App{% endblock %}
+
+{% block content %}
+    <div class="jumbotron bg-secondary text-white">
+        <h1 class="display-4">To-Do App</h1>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+        <ul class="list-group mb-1">
+            <h2 class="font-weight-light text-dark mt-3">Users</h2>
+            {% for item in users %}
+            <li class="list-group mb-3">
+                <div class="card border-dark text-dark bg-light mb-2">
+                <div class="card-body">
+                    <h5 class="card-title mb-3" name="to-do-card-title">{{ item.name }}</h5>
+                    <p class="card-text">Github ID: {{ item.github_id }}</p>
+                    <p class="card-text">User role: {{ item.user_role }}</p>
+                </div>
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
+        </div>
+    </div>
+{% endblock %}

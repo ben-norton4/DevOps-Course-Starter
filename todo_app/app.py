@@ -1,3 +1,4 @@
+from calendar import c
 from operator import truediv
 import os
 import requests
@@ -21,6 +22,7 @@ def create_app():
     mongo_db_client = pymongo.MongoClient(os.getenv('DATABASE_CONNECTION_STRING'))
     db = mongo_db_client[os.getenv('DATABASE_NAME')]
     collection = db['todo_app_items']
+    users_collection = db['users']
 
     app = Flask(__name__)
     app.config.from_object('todo_app.flask_config.Config')
@@ -30,12 +32,10 @@ def create_app():
     web_application_client = WebApplicationClient(os.getenv('CLIENT_ID'))
 
     class User(UserMixin):
-        def __init__(self, id):
-            self.id = id
+        def __init__(self, id, user_role='reader'):
+            self.github_id = id
             if id == writer_user_id:
-                self.user_role = 'writer'
-            else:
-                self.user_role = 'reader'
+                self.user_role = 'admin'
 
     @login_manager.unauthorized_handler
     def unauthenticated():
@@ -61,13 +61,16 @@ def create_app():
         access_token = web_application_client.token['access_token']
         header = {'Authorization': f'Bearer {access_token}'}
         response = requests.get('https://api.github.com/user', headers=header).json()
-        user_id = response['id']
-        user = User(user_id)
+        github_id = response['id']
+        user = User(github_id)
         login_user(user)
         return redirect('/')
 
     def is_writer():
         return current_user.user_role == 'writer'
+
+    def is_admin():
+        return current_user.user_role == 'admin'
 
     @app.route('/')
     @login_required
@@ -77,7 +80,7 @@ def create_app():
         for item in items:
             cards.append(Item(item['_id'], item['name'], item['description'], item['due_date'].strftime('%d/%m/%Y') , item['status']))
         item_view_model = ViewModel(cards)
-        return render_template('index.html', view_model = item_view_model, is_writer = is_writer())
+        return render_template('index.html', view_model = item_view_model, is_writer = is_writer(), is_admin = is_admin())
 
     @app.route('/create-todo/', methods=['POST'])
     def create_todo():
@@ -135,7 +138,36 @@ def create_app():
         collection.delete_one(query)
         return redirect('/')
 
+    @app.route('/users', methods=['GET'])
+    def users():
+        db_users = users_collection.find()
+        users = []
+        for item in db_users:
+            user = User(item['github_id'])
+            user.name = item['name']
+            user.user_role = item['user_role']
+            users.append(user)
+        return render_template('users.html', users=users)
+
+    @app.route('/add-user/', methods=['POST'])
+    def add_user():
+        """ if not is_admin():
+            return redirect('/') """
+        
+        user_name = request.form.get('user-name')
+        github_id = request.form.get('github-id')
+        user_role = request.form.get('user-role')
+        post = {
+            'name': user_name,
+            'user_role': user_role,
+            'github_id': github_id
+        }
+        users_collection.insert_one(post)
+        return redirect('/users')
+
     return app
+
+    
 
 if __name__ == '__main__':
     app = create_app()

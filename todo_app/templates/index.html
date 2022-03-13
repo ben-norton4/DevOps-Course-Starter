@@ -7,6 +7,11 @@
   </div>
   <div class="card border-dark text-dark bg-light mb-2">
     <div class="card-body">
+      {% if is_admin %}
+      <form action="{{ url_for('users') }}" method="get">
+        <button type="submit" name="users-button" class="btn btn-outline-primary mr-1 mb-4">Manage users</button>
+      </form>
+      {% endif %}
 
       {% if is_writer %}
       <div class="mb-4">
@@ -24,13 +29,10 @@
           </div>
           <label for="description">Description</label>
           <textarea type="text" class="form-control mb-3" id="description" name="description" required></textarea>
-          <form action="{{ url_for('create_todo') }}" method="post">
-            <button type="submit" name="create-to-do-button" class="btn btn-outline-primary mr-1">To-Do</button>
-          </form>
+          <button type="submit" name="create-to-do-button" class="btn btn-outline-primary mr-1">To-Do</button>
         </form>
       </div>
       {% endif %}
-
 
       <div class="row">
         <div class="col-md-12">
