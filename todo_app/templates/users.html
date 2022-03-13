@@ -5,34 +5,48 @@
     <div class="jumbotron bg-secondary text-white">
         <h1 class="display-4">To-Do App</h1>
     </div>
+    <div class="card border-dark text-dark bg-light mb-2">
+        <div class="card-body">
 
-    <div class="row">
-        <div class="col-md-12">
-        <ul class="list-group mb-1">
-            <h2 class="font-weight-light text-dark mt-3">Users</h2>
-            {% for item in users %}
-            <li class="list-group mb-3">
-                <div class="card border-dark text-dark bg-light mb-2">
-                    <div class="card-body">
-                        <h5 class="card-title mb-3" name="to-do-card-title">{{ item.name }}</h5>
-                        <p class="card-text">Github ID: {{ item.github_id }}</p>
-                        <p class="card-text">User role: {{ item.user_role }}</p>
+            <form action="{{ url_for('index') }}" method="get">
+                <button type="submit" name="users-button" class="btn btn-outline-primary mr-1 mb-4">To-do list</button>
+            </form>
 
-                        <div class="dropdown">
-                            <button class="btn btn-primary dropdown-toggle" type="button" name="select-list" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                User role
-                            </button>
-                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                <button class="dropdown-item" value="admin" name="admin" id="admin">admin</a>
-                                <button class="dropdown-item" value="writer" name="writer" id="writer">writer</a>
-                                <button class="dropdown-item" value="reader" name="reader" id="reader">reader</a>
+            <div class="row">
+                <div class="col-md-12">
+                <ul class="list-group mb-1">
+                    <h2 class="font-weight-light text-dark mt-3">Users</h2>
+                    {% for item in users %}
+                    <li class="list-group mb-3">
+                        <div class="card border-dark text-dark bg-light mb-2">
+                            <div class="card-body">
+                                <h5 class="card-title mb-3" name="to-do-card-title">{{ item.name }}</h5>
+                                <p class="card-text">Github ID: {{ item.github_id }}</p>
+                                <p class="card-text">User role: {{ item.user_role }}</p>
+
+                                <div class="dropdown">
+                                    <button class="btn btn-primary dropdown-toggle" type="button" name="select-list" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        Select user role
+                                    </button>
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                        <form action="{{ url_for('update_user_role', id=item.github_id, user_role='admin') }}" method="post">
+                                            <button class="dropdown-item" value="admin" name="admin" id="admin">admin</a>
+                                        </form>
+                                        <form action="{{ url_for('update_user_role', id=item.github_id, user_role='writer') }}" method="post">
+                                            <button class="dropdown-item" value="writer" name="writer" id="admin">writer</a>
+                                        </form>
+                                        <form action="{{ url_for('update_user_role', id=item.github_id, user_role='reader') }}" method="post">
+                                            <button class="dropdown-item" value="reader" name="reader" id="admin">reader</a>
+                                        </form>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    </li>
+                    {% endfor %}
+                </ul>
                 </div>
-            </li>
-            {% endfor %}
-        </ul>
+            </div>
         </div>
     </div>
 {% endblock %}

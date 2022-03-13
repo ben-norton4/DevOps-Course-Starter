@@ -149,20 +149,16 @@ def create_app():
             users.append(user)
         return render_template('users.html', users=users)
 
-    @app.route('/add-user/', methods=['POST'])
-    def add_user():
-        """ if not is_admin():
-            return redirect('/') """
-        
-        user_name = request.form.get('user-name')
-        github_id = request.form.get('github-id')
-        user_role = request.form.get('user-role')
-        post = {
-            'name': user_name,
-            'user_role': user_role,
-            'github_id': github_id
-        }
-        users_collection.insert_one(post)
+    @app.route('/update-user-role/<id>/<user_role>', methods=['POST'])
+    def update_user_role(id, user_role):
+        if not is_admin():
+            return redirect('/')
+
+        query = {'github_id': id}
+        update_values = {'$set': {'user_role':user_role}}
+        users_collection.update_one(query, update_values)
+        print(id)
+        print(user_role)
         return redirect('/users')
 
     return app
