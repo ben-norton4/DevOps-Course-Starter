@@ -102,7 +102,7 @@ def create_app():
     def create_todo():
         if not is_writer():
             return redirect('/')
-        
+          
         title = request.form.get('title')
         desc = request.form.get('description')
         due = request.form.get('due-date')
