@@ -27,7 +27,7 @@ def get_mock_collection():
 
 def test_index_page(client):
     response = client.get('/')
-    assert response.status_code == 200
+    assert response.status_code in [301,302,303,307,308]
 
 def test_create_todo(client):
     collection = get_mock_collection()

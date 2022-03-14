@@ -1,6 +1,3 @@
-from calendar import c
-from imp import new_module
-from operator import truediv
 import os
 import requests
 from oauthlib.oauth2 import WebApplicationClient
