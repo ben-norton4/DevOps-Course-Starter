@@ -28,7 +28,7 @@ def create_app():
 
     class User(UserMixin):
         def __init__(self, id):
-            self.github_id = id
+            self.id = id
 
     @login_manager.unauthorized_handler
     def unauthenticated():
@@ -58,14 +58,13 @@ def create_app():
         access_token = web_application_client.token['access_token']
         header = {'Authorization': f'Bearer {access_token}'}
         response = requests.get('https://api.github.com/user', headers=header).json()
-        github_id = response['id']
+        github_id = str(response['id'])
         
         query = {'github_id': github_id}
         db_user = users_collection.find_one(query)
         
         if(db_user) == None:
-            items = collection.find()
-            if(items.count() == 0):
+            if(users_collection.count_documents({}) == 0):
                 user_role = 'admin'
             else:
                 user_role = 'reader'
@@ -79,7 +78,7 @@ def create_app():
             db_user = users_collection.find_one(query)
 
         user = User(db_user['github_id'])
-        login_user(user.github_id)
+        login_user(user)
         return redirect('/')
 
     def is_writer():
