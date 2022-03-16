@@ -82,9 +82,14 @@ def create_app():
         return redirect('/')
 
     def is_writer():
+        if(app.config['LOGIN_DISABLED']):
+            return True
+
         return current_user.user_role == 'writer'
 
     def is_admin():
+        if(app.config['LOGIN_DISABLED']):
+            return True
         return current_user.user_role == 'admin'
 
     @app.route('/')
