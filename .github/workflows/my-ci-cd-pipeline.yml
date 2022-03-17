@@ -48,5 +48,5 @@ jobs:
       run: docker push registry.heroku.com/todo-app-devops-academy/web
     - name: release the container on the heroku registry
       run: HEROKU_API_KEY="$HEROKU_API_KEY" heroku container:release -a todo-app-devops-academy web
-    - name: pull the latest prod container and restart on azure
+    - name: pull the latest prod container from dockerhub and restart on azure
       run: sh ./webhook.sh
