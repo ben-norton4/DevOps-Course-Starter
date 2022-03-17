@@ -27,6 +27,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       HEROKU_API_KEY: "${{ secrets.HEROKU_TOKEN }}"
+      WEBHOOK_URL: "${{ secrets.WEBHOOK_URL }}"
     steps:
     - uses: actions/checkout@v1
     - name: login to dockerhub
@@ -47,3 +48,5 @@ jobs:
       run: docker push registry.heroku.com/todo-app-devops-academy/web
     - name: release the container on the heroku registry
       run: HEROKU_API_KEY="$HEROKU_API_KEY" heroku container:release -a todo-app-devops-academy web
+    - name: pull the latest prod container and restart on azure
+      run: sh ./webhook.sh
