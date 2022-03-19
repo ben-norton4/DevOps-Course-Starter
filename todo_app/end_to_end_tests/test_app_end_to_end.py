@@ -9,6 +9,7 @@ test_item_name = 'E2E Test Item'
 test_item_due_date = '01/01/2022'
 test_item_description = 'E2E Test Item Description'
 os.environ['DATABASE_NAME'] = 'test_todo_app_database'
+os.environ['LOGIN_DISABLED'] = 'True'
 
 @pytest.fixture(scope='module')
 def app_with_temp_database():

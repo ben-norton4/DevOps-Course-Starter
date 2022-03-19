@@ -27,8 +27,10 @@ def create_app():
     web_application_client = WebApplicationClient(os.getenv('CLIENT_ID'))
 
     class User(UserMixin):
-        def __init__(self, id):
+        def __init__(self, id, name, user_role):
             self.id = id
+            self.name = name
+            self.user_role = user_role
 
     @login_manager.unauthorized_handler
     def unauthenticated():
@@ -36,11 +38,9 @@ def create_app():
     
     @login_manager.user_loader     
     def load_user(user_id):         
-        user = User(user_id)
         query = {'github_id': user_id}
         db_user = users_collection.find_one(query)
-        user.name = db_user['name']
-        user.user_role = db_user['user_role']
+        user = User(user_id, db_user['name'], db_user['user_role'])
         return user
     
     login_manager.init_app(app)
@@ -77,15 +77,15 @@ def create_app():
             users_collection.insert_one(post)
             db_user = users_collection.find_one(query)
 
-        user = User(db_user['github_id'])
+        user = User(db_user['github_id'], db_user['name'], db_user['user_role'])
         login_user(user)
         return redirect('/')
 
     def is_writer():
-        return current_user.user_role == 'writer'
+        return app.config['LOGIN_DISABLED'] or current_user.user_role == 'writer'
 
     def is_admin():
-        return current_user.user_role == 'admin'
+        return app.config['LOGIN_DISABLED'] or current_user.user_role == 'admin'
 
     @app.route('/')
     @login_required

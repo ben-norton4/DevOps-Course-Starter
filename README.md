@@ -112,7 +112,7 @@ Prerequisites:
 
 1. Configure your host machine system and install Docker Desktop using these instructions: https://docs.docker.com/get-docker/
 
-To run a docker container you will need to create an .env file in the root of the project containing the below variables (note the PORT, DATABASE_CONNECTION_STRING and DATABASE_NAME values should be replaced with your own values for port to use and MongoDB credentials):
+To run a docker container you will need to create an .env file in the root of the project containing the below variables (note the SECRET_KEY, PORT, DATABASE_CONNECTION_STRING, DATABASE_NAME, CLIENT_SECRET and CLIENT_ID values should be replaced with your own values for these credentials):
 ```
 FLASK_APP=todo_app/app
 FLASK_ENV=development
@@ -120,6 +120,10 @@ SECRET_KEY=secret-key
 PORT=port_number
 DATABASE_CONNECTION_STRING=mongo_database_connection_string
 DATABASE_NAME=mongo_database_name
+CLIENT_SECRET=github_oauth_app_client_secret
+CLIENT_ID=github_oauth_app_client_id
+OAUTHLIB_INSECURE_TRANSPORT=1
+LOGIN_DISABLED=false
 ```
 
 To build and run the prod and dev containers using docker compose use the below command:
