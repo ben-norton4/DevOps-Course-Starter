@@ -4,12 +4,12 @@ import pymongo
 from todo_app.app import create_app
 from threading import Thread
 from selenium import webdriver
-import time
 
 test_item_name = 'E2E Test Item'
-test_item_due_date = '01/01/2023'
+test_item_due_date = '01/01/2022'
 test_item_description = 'E2E Test Item Description'
 os.environ['DATABASE_NAME'] = 'test_todo_app_database'
+os.environ['LOGIN_DISABLED'] = 'True'
 
 @pytest.fixture(scope='module')
 def app_with_temp_database():
@@ -19,7 +19,6 @@ def app_with_temp_database():
     thread.start()
     yield application
     thread.join(1)
-    time.sleep(10)
     mongo_db_client = pymongo.MongoClient(os.getenv('DATABASE_CONNECTION_STRING'))
     mongo_db_client.drop_database(str([os.getenv('DATABASE_NAME')]))
 
@@ -44,18 +43,15 @@ def create_test_item(driver, item_name, due_date, description):
     return card_title
 
 def test_task_journey(driver, app_with_temp_database):
-    time.sleep(10)
     driver.get('http://localhost:5000')
     assert driver.title == 'To-Do App'
 
 def test_create_item(driver, app_with_temp_database):
-    time.sleep(10)
     card_title = create_test_item(driver, test_item_name, test_item_due_date, test_item_description)
     assert test_item_name in card_title.text
     driver.find_element_by_name('to-do-delete-button').click()
 
 def test_update_item(driver, app_with_temp_database):
-    time.sleep(10)
     card_title = create_test_item(driver, test_item_name, test_item_due_date, test_item_description)
     assert test_item_name in card_title.text
     driver.find_element_by_name('to-do-doing-button').click()
@@ -64,7 +60,6 @@ def test_update_item(driver, app_with_temp_database):
     driver.find_element_by_name('doing-delete-button').click()
 
 def test_delete_item(driver, app_with_temp_database):
-    time.sleep(10)
     card_title = create_test_item(driver, test_item_name, test_item_due_date, test_item_description)
     assert test_item_name in card_title.text
     driver.find_element_by_name('to-do-delete-button').click()
