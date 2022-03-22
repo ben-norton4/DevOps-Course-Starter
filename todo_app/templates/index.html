@@ -8,9 +8,7 @@
   <div class="card border-dark text-dark bg-light mb-2">
     <div class="card-body">
       {% if is_admin %}
-      <form action="{{ url_for('users') }}" method="get">
-        <button type="submit" name="users-button" class="btn btn-outline-primary mr-1 mb-4">Manage users</button>
-      </form>
+      <a href="{{ url_for('users') }}" class="btn btn-outline-primary mr-1 mb-4">Manage users</a>
       {% endif %}
 
       {% if is_writer %}
