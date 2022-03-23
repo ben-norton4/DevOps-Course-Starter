@@ -23,7 +23,7 @@ jobs:
   deploy:
     name: Deploy into production
     needs: test
-    if: github.ref == 'refs/heads/exercise-11' && github.event_name == 'push'
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
     runs-on: ubuntu-latest
     env:
       HEROKU_API_KEY: "${{ secrets.HEROKU_TOKEN }}"
