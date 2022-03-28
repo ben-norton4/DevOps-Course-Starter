@@ -158,9 +158,7 @@ def create_app():
         db_users = users_collection.find()
         users = []
         for item in db_users:
-            user = User(item['github_id'])
-            user.name = item['name']
-            user.user_role = item['user_role']
+            user = User(item['github_id'], item['name'], item['user_role'])
             users.append(user)
         return render_template('users.html', users=users)
 
