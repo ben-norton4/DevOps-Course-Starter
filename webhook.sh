@@ -1,2 +1,2 @@
 #!/bin/bash
-curl -dH -X POST "$WEBHOOK_URL"
+curl -dH -X POST "$(terraform output -raw webhook_url)"

@@ -23,11 +23,14 @@ jobs:
   deploy:
     name: Deploy into production
     needs: test
-    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    if: github.ref == 'refs/heads/exercise-12' && github.event_name == 'push'
     runs-on: ubuntu-latest
     env:
       HEROKU_API_KEY: "${{ secrets.HEROKU_TOKEN }}"
       WEBHOOK_URL: "${{ secrets.WEBHOOK_URL }}"
+      TF_VAR_client_secret: "${{ secrets.CLIENT_SECRET }}"
+      TF_VAR_docker_registry_server_password: "${{ secrets.DOCKER_REGISTRY_SERVER_PASSWORD }}"
+      TF_VAR_secret_key: "${{ secrets.SECRET_KEY }}"
     steps:
     - uses: actions/checkout@v1
     - name: login to dockerhub
@@ -48,5 +51,9 @@ jobs:
       run: docker push registry.heroku.com/todo-app-devops-academy/web
     - name: release the container on the heroku registry
       run: HEROKU_API_KEY="$HEROKU_API_KEY" heroku container:release -a todo-app-devops-academy web
+    - name: intitialise terraform for azure IaC
+      run: terraform init
+    - name: apply terraform update
+      run: terraform apply -auto-approve
     - name: pull the latest prod container from dockerhub and restart on azure
       run: sh ./webhook.sh
