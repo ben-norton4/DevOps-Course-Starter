@@ -43,14 +43,14 @@ jobs:
       run: docker push "${{ secrets.DOCKER_LOGIN }}"/todo-app-production:latest
     - name: pull production image from dockerhub
       run: docker pull "${{ secrets.DOCKER_LOGIN }}"/todo-app-production:latest
-    - name: tag production image for deployment to heroku
-      run: docker tag "${{ secrets.DOCKER_LOGIN }}"/todo-app-production:latest registry.heroku.com/todo-app-devops-academy/web
-    - name: login to docker on the heroku registry
-      run: docker login --username=_ --password="$HEROKU_API_KEY" registry.heroku.com
-    - name: push production image to heroku registry
-      run: docker push registry.heroku.com/todo-app-devops-academy/web
-    - name: release the container on the heroku registry
-      run: HEROKU_API_KEY="$HEROKU_API_KEY" heroku container:release -a todo-app-devops-academy web
+    #- name: tag production image for deployment to heroku
+    #  run: docker tag "${{ secrets.DOCKER_LOGIN }}"/todo-app-production:latest registry.heroku.com/todo-app-devops-academy/web
+    #- name: login to docker on the heroku registry
+    #  run: docker login --username=_ --password="$HEROKU_API_KEY" registry.heroku.com
+    #- name: push production image to heroku registry
+    #  run: docker push registry.heroku.com/todo-app-devops-academy/web
+    #- name: release the container on the heroku registry
+    #  run: HEROKU_API_KEY="$HEROKU_API_KEY" heroku container:release -a todo-app-devops-academy web
     - name: intitialise terraform for azure IaC
       run: terraform init
     - name: apply terraform update
